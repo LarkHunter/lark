@@ -183,6 +183,8 @@ bool SubServer::DealNetRequest(int iServerfd)
 			else
 			{
 				std::cout << "sock_client "<< sock_client <<"Accept"<< std::endl;
+				
+				m_VecClientFd.push_back(sock_client);
 			}
 
 			char buffer[1024];
