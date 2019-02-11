@@ -142,6 +142,8 @@ bool SubServer::DealNetRequest(int iServerfd)
 	fd_set client_fdset;	/*监控文件描述符集合*/
 	struct timeval tv;		/*超时返回时间*/
 
+	tv.tv_sec = 5;
+	tv.tv_usec = 0;
 	while(1)
 	{
 		/*初始化文件描述符号到集合*/
@@ -163,8 +165,7 @@ bool SubServer::DealNetRequest(int iServerfd)
 		else if(ret == 0) // 超时 0
 		{
 			printf("timeout!\n");
-			Sleep(5000);
-
+	
 			continue;
 		}
 
