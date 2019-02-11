@@ -185,22 +185,26 @@ bool SubServer::DealNetRequest(int iServerfd)
 				std::cout << "sock_client "<< sock_client <<"Accept"<< std::endl;
 				
 				m_VecClientFd.push_back(sock_client);
+
+				int iSend = 666;
+				send(sock_client, (char*)&iSend, sizeof(iSend), 0);
+
 			}
 
-			char buffer[1024];
-			memset(buffer, 0, sizeof(buffer));
+// 			char buffer[1024];
+// 			memset(buffer, 0, sizeof(buffer));
+// 
+// 			ret = recv(sock_client, buffer, 1024, 0);
+// 			if(ret < 0)
+// 			{
+// 				perror("recv error!\n");
+// 				
+// 				WSACleanup();
+// 
+// 				//return f;
+// 			}
 
-			ret = recv(sock_client, buffer, 1024, 0);
-			if(ret < 0)
-			{
-				perror("recv error!\n");
-				
-				WSACleanup();
-
-				//return f;
-			}
-
-			printf("recv : %s\n", buffer);
+			//printf("recv : %s\n", buffer);
 		}
 
 	}
