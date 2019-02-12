@@ -1,4 +1,5 @@
 #include "Client.h"
+#define DEFAULT_BUFLEN 512
 
 
 /*--------------------------------------------------------------------
@@ -85,8 +86,24 @@ bool Client::StartNetService()
 	else
 	{
 		std::cout << "ConnectMainServer Success!" << std::endl;
-		const char *buf = "OK";
-		send(iListenSocket, buf, strlen(buf), 0);
+		//const char *buf = "OK";
+		//send(iListenSocket, buf, strlen(buf), 0);
+		char recvbuf[DEFAULT_BUFLEN];
+		int recvbuflen = DEFAULT_BUFLEN;
+
+		iResult = recv(iListenSocket, recvbuf, recvbuflen, 0);
+		if(iResult > 0)
+		{
+			std::cout << "  = " << recvbuf << std::endl;
+		}
+		else if(0 == iResult)
+		{
+			std::cout <<"Connection Closed!" << std::endl;
+		}
+		else
+		{
+			std::cout << "Received Error"<< WSAGetLastError()<< std::endl;
+		}
 	}
 
 
