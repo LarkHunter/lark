@@ -1,10 +1,10 @@
 #include <iostream>
-#include "MainServerSocket.h"
+#include "AceptServerSocket.h"
 /*using namespace std;*/
 
 int main()
 {
-	MainServer m_MainServer;
+	AceptServerSocket m_MainServer;
 	m_MainServer.StartNetService();
 	return 0;
 }

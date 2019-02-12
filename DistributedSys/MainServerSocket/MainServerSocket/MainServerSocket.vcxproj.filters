@@ -18,16 +18,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainServerSocket.h">
-      <Filter>MainServerSocket</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MainServerSocket.cpp">
+    <ClCompile Include="AcceptServerSocket.cpp">
       <Filter>MainServerSocket</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AceptServerSocket.h">
+      <Filter>MainServerSocket</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
