@@ -1,0 +1,5 @@
+工程说明:
+1、client 是客户端工程
+2、MainServerSocket是主服务器工程
+3、SubServerSocket是功能服务器工程
+4、Test是功能服务器对接客户端部分，采用的select的连接方式
