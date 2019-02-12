@@ -26,5 +26,11 @@ public:
 	// 初始化网络服务
 	bool InitNetService();
 
+private:
+
+	// 初始化套接字
+	int InitSocket();
+
+	
 };
 

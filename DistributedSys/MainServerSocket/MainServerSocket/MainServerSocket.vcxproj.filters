@@ -13,8 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="MainServerSocket">
+    <Filter Include="AcceptServerSocket">
       <UniqueIdentifier>{1e34aa0e-0ec7-4e69-a156-27e412c1e1e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SelectClientSocket">
+      <UniqueIdentifier>{22cc2912-dcad-4f37-ba99-bcf5bed6a86b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,12 +25,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AcceptServerSocket.cpp">
-      <Filter>MainServerSocket</Filter>
+      <Filter>AcceptServerSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectClientSocket.cpp">
+      <Filter>SelectClientSocket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AceptServerSocket.h">
-      <Filter>MainServerSocket</Filter>
+      <Filter>AcceptServerSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectClientSocket.h">
+      <Filter>SelectClientSocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
