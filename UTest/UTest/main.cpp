@@ -3,26 +3,35 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include<windows.h>
+#include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <thread>
+
 char* substring(char* ch, int pos, int length);
 
+void SubThread(int iCount)
+{
+	std::cout << "iCount = "<< iCount << std::endl;
+}
 int main()
 {
-	typedef std::vector<int> VecCount;
+	int iCount = 9;
+	std::thread myThread(SubThread, iCount);
 
-	VecCount m_VecCount;
-	m_VecCount.push_back(2);
-	m_VecCount.push_back(5);
-
-	int iSize = m_VecCount.size();
-	for(int i = 0;i < 10;i++)
-	{
-		int iNum = rand() % iSize;
-		std::cout << "iNum = "<< iNum << std::endl;
-	}
+// 	typedef std::vector<int> VecCount;
+// 
+// 	VecCount m_VecCount;
+// 	m_VecCount.push_back(2);
+// 	m_VecCount.push_back(5);
+// 
+// 	int iSize = m_VecCount.size();
+// 	for(int i = 0;i < 10;i++)
+// 	{
+// 		int iNum = rand() % iSize;
+// 		std::cout << "iNum = "<< iNum << std::endl;
+// 	}
 //	int iNum = rand() % 2;
 
 	//std::cout <<"m_VecCount.at(iNum) = " << m_VecCount.at(iNum)<< std::endl;
