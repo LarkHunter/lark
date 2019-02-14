@@ -9,7 +9,7 @@ int main()
 	SelectClientSocket m_SelectClient;
 
 	m_MainServer.StartNetService();
-	m_SelectClient.StartNetService();
+	//m_SelectClient.StartNetService();
 
 	return 0;
 }

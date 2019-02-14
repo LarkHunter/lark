@@ -41,7 +41,7 @@ void AcceptServerSocket::AcceptSubServerConnect(int iListenSocket)
 	{
 		m_pAcceptServerSocket->AcceptSocket(iListenSocket);
 		Sleep(5000);
-		std::cout << "good Accept" << std::endl;
+		std::cout << "To SubServer: Accept" << std::endl;
 	}
 }
 
@@ -59,6 +59,8 @@ void AcceptServerSocket::AcceptSubServerConnect(int iListenSocket)
 AcceptServerSocket::AcceptServerSocket()
 {
 	m_pAcceptServerSocket = this;
+
+	//m_threadDetectSubServerHeart = new std::thread(); // 子服务器心跳线程
 }
 /*--------------------------------------------------------------------
 ** 名称 : ~AcceptServerSocket
@@ -111,21 +113,20 @@ bool AcceptServerSocket::StartNetService()
 		return false;
 	}
 
-	/*在子线程中处理请求*/
-	std::thread t_DetectSubServer(DetectSubServerHeart);
 
-	/*在子线程中处理子服务器连接*/
-	//std::thread t_AcceptSubServer(AcceptSubServerConnect, iListenSocket);
-	m_pAcceptServerSocket->AcceptSocket(iListenSocket);
+	/*在子线程中检测心跳*/
+	m_threadDetectSubServerHeart = new std::thread(DetectSubServerHeart);
 
-	//tSocket.join();
+	/*在子线程中处理子服务器请求*/
+	m_threadAcceptSubserver = new std::thread(AcceptSubServerConnect, iListenSocket);
+	
 	
 	return true;
 }
 /*--------------------------------------------------------------------
 ** 名称 : QueryOnlineSubServer
 **--------------------------------------------------------------------
-** 功能 : 获取在线子服务器
+** 功能 : 获取在线子服务
 **--------------------------------------------------------------------
 ** 参数 : vecSubServerSocket 在线子服务器
 ** 返值 : NULL
@@ -167,7 +168,7 @@ int AcceptServerSocket::CreateSocket()
 
 	if (INVALID_SOCKET == ListenSocket)
 	{
-		std::cout << "Create Socket Error!" << std::endl;
+		std::cout << "To SubServer:Create Socket Error!" << std::endl;
 
 		WSACleanup();
 
@@ -175,7 +176,7 @@ int AcceptServerSocket::CreateSocket()
 	}
 	else
 	{
-		std::cout << "Create Socket Success" << std::endl;
+		std::cout << "To SubServer:Create Socket Success" << std::endl;
 	}
 	
 	return ListenSocket;
@@ -213,7 +214,7 @@ bool AcceptServerSocket::BindSocket(int iListenSocket)
 	}
 	else
 	{
-		std::cout << "Bind Socket Success"<< std::endl;
+		std::cout << "To SubServer:Bind Socket Success"<< std::endl;
 	}
 	return true;
 
@@ -334,7 +335,7 @@ void AcceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 		wprintf(L"recv failed with error: %d\n", WSAGetLastError());
 		closesocket(iAcceptSocket);
 	}
-	std::cout << "Accept Success" << std::endl;
+	std::cout << "To SubServer:Accept Success" << std::endl;
 }
 
 /*--------------------------------------------------------------------

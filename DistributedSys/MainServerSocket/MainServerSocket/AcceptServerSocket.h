@@ -64,9 +64,12 @@ private:
 	// 分配功能服务器
 	static int DistributeServerSocket();
 
-
 private:
 	static AcceptServerSocket* m_pAcceptServerSocket;
 
 	VecSubServerSocket m_vecSubServerSocket; // 子服务器的连接套接字
+
+	std::thread *m_threadDetectSubServerHeart; // 检测子服务器心跳
+
+	std::thread *m_threadAcceptSubserver; // 接受子服务器请求
 };

@@ -87,7 +87,7 @@ int SelectClientSocket::InitSocket()
 
 	if (INVALID_SOCKET == iListenSocket)
 	{
-		std::cout << "Create Socket Error!" << std::endl;
+		std::cout << "To Client: Create Socket Error!" << std::endl;
 
 		WSACleanup();
 
@@ -95,7 +95,7 @@ int SelectClientSocket::InitSocket()
 	}
 	else
 	{
-		std::cout << "Create Socket Success" << std::endl;
+		std::cout << "To Client: Create Socket Success" << std::endl;
 	}
 
 	sockaddr_in service;
@@ -114,7 +114,7 @@ int SelectClientSocket::InitSocket()
 	}
 	else
 	{
-		std::cout << "Bind Socket Success" << std::endl;
+		std::cout << "To Client:Bind Socket Success" << std::endl;
 	}
 
 	int iRet = listen(iListenSocket, SOMAXCONN);
@@ -124,7 +124,7 @@ int SelectClientSocket::InitSocket()
 	}
 	else
 	{
-		std::cout << "Listen Socket Success" << std::endl;
+		std::cout << "To Client:Listen Socket Success" << std::endl;
 	}
 
 	return iListenSocket;
@@ -163,7 +163,7 @@ bool SelectClientSocket::SelectCilentConnect(int iSeverSocketfd)
 		int ret = select(iSeverSocketfd + 1, &client_fdset, NULL, NULL, &tv);
 		if(ret < 0) // ³ö´í -1
 		{
-			perror("select error!\n");
+			perror("To Client:select error!\n");
 
 			Sleep(5000);
 			continue;
@@ -172,7 +172,7 @@ bool SelectClientSocket::SelectCilentConnect(int iSeverSocketfd)
 		}
 		else if (ret == 0) // ³¬Ê± 0
 		{
-			printf("timeout!\n");
+			printf("To Client:timeout!\n");
 
 			continue;
 		}
@@ -185,12 +185,12 @@ bool SelectClientSocket::SelectCilentConnect(int iSeverSocketfd)
 			int sock_client = accept(iSeverSocketfd, NULL, NULL);
 			if(sock_client < 0)
 			{
-				perror("accept error!\n");
+				perror("To Client:accept error!\n");
 				continue;
 			}
 			else
 			{
-				std::cout << "sock_client " << sock_client << "Accept" << std::endl;
+				std::cout << "To Client: sock_client " << sock_client << "Accept" << std::endl;
 
 				m_vecClientFd.push_back(sock_client);
 
