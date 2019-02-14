@@ -1,10 +1,15 @@
 #include <iostream>
-#include "AceptServerSocket.h"
+#include "AcceptServerSocket.h"
+#include "SelectClientSocket.h"
 /*using namespace std;*/
 
 int main()
 {
-	AceptServerSocket m_MainServer;
+	AcceptServerSocket m_MainServer;
+	SelectClientSocket m_SelectClient;
+
 	m_MainServer.StartNetService();
+	m_SelectClient.StartNetService();
+
 	return 0;
 }

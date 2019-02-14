@@ -32,11 +32,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AceptServerSocket.h">
-      <Filter>AcceptServerSocket</Filter>
-    </ClInclude>
     <ClInclude Include="SelectClientSocket.h">
       <Filter>SelectClientSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="AcceptServerSocket.h">
+      <Filter>AcceptServerSocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

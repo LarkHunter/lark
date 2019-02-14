@@ -1,9 +1,9 @@
-#include "AceptServerSocket.h"
+#include "AcceptServerSocket.h"
 #include<thread>
 
 #define DEFAULT_BUFLEN 512
 
-AceptServerSocket* AceptServerSocket::m_AceptServerSocket = NULL;
+AcceptServerSocket* AcceptServerSocket::m_pAcceptServerSocket = NULL;
 
 /*--------------------------------------------------------------------
 ** 名称 : DetectSubServerHeart
@@ -16,7 +16,7 @@ AceptServerSocket* AceptServerSocket::m_AceptServerSocket = NULL;
 ** Date:		Name
 ** 19.02.07		任伟
 **-------------------------------------------------------------------*/
-void AceptServerSocket::DetectSubServerHeart()
+void AcceptServerSocket::DetectSubServerHeart()
 {
 	while (1)
 	{
@@ -24,9 +24,29 @@ void AceptServerSocket::DetectSubServerHeart()
 		DetectSubServer();
 	}
 }
+/*--------------------------------------------------------------------
+** 名称 : AcceptSubServerConnect
+**--------------------------------------------------------------------
+** 功能 : 接受子线程连接
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.07		任伟
+**-------------------------------------------------------------------*/
+void AcceptServerSocket::AcceptSubServerConnect(int iListenSocket)
+{
+	while(1)
+	{
+		m_pAcceptServerSocket->AcceptSocket(iListenSocket);
+		Sleep(5000);
+		std::cout << "good Accept" << std::endl;
+	}
+}
 
 /*--------------------------------------------------------------------
-** 名称 : AceptServerSocket
+** 名称 : AcceptServerSocket
 **--------------------------------------------------------------------
 ** 功能 : 初始化
 **--------------------------------------------------------------------
@@ -36,12 +56,12 @@ void AceptServerSocket::DetectSubServerHeart()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-AceptServerSocket::AceptServerSocket()
+AcceptServerSocket::AcceptServerSocket()
 {
-	m_AceptServerSocket = this;
+	m_pAcceptServerSocket = this;
 }
 /*--------------------------------------------------------------------
-** 名称 : ~AceptServerSocket
+** 名称 : ~AcceptServerSocket
 **--------------------------------------------------------------------
 ** 功能 : 释放
 **--------------------------------------------------------------------
@@ -51,10 +71,11 @@ AceptServerSocket::AceptServerSocket()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-AceptServerSocket::~AceptServerSocket()
+AcceptServerSocket::~AcceptServerSocket()
 {
 
 }
+
 /*--------------------------------------------------------------------
 ** 名称 : StartNetService
 **--------------------------------------------------------------------
@@ -66,7 +87,7 @@ AceptServerSocket::~AceptServerSocket()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-bool AceptServerSocket::StartNetService()
+bool AcceptServerSocket::StartNetService()
 {
 	// 创建套接字
 	int iListenSocket = CreateSocket();
@@ -91,18 +112,34 @@ bool AceptServerSocket::StartNetService()
 	}
 
 	/*在子线程中处理请求*/
-	std::thread t_detectSubServer(DetectSubServerHeart);
-	//tSocket.join();
-	while(1)
-	{
-		AcceptSocket(iListenSocket);
-		Sleep(5000);
-		std::cout << "good Accept"<<std::endl;
-	}
+	std::thread t_DetectSubServer(DetectSubServerHeart);
 
-	t_detectSubServer.join();
+	/*在子线程中处理子服务器连接*/
+	//std::thread t_AcceptSubServer(AcceptSubServerConnect, iListenSocket);
+	m_pAcceptServerSocket->AcceptSocket(iListenSocket);
+
+	//tSocket.join();
+	
 	return true;
 }
+/*--------------------------------------------------------------------
+** 名称 : QueryOnlineSubServer
+**--------------------------------------------------------------------
+** 功能 : 获取在线子服务器
+**--------------------------------------------------------------------
+** 参数 : vecSubServerSocket 在线子服务器
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.14		任伟
+**-------------------------------------------------------------------*/
+bool AcceptServerSocket::QueryOnlineSubServer(VecSubServerSocket& vecSubServerSocket)
+{
+	vecSubServerSocket = m_pAcceptServerSocket->m_vecSubServerSocket;
+
+	return true;
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : CreateSocket
 **--------------------------------------------------------------------
@@ -114,7 +151,7 @@ bool AceptServerSocket::StartNetService()
 ** Date:		Name
 ** 19.01.31		任伟
 **-------------------------------------------------------------------*/
-int AceptServerSocket::CreateSocket()
+int AcceptServerSocket::CreateSocket()
 {
 	//初始化DLL
 	WSADATA wsaData;
@@ -154,7 +191,7 @@ int AceptServerSocket::CreateSocket()
 ** Date:		Name
 ** 19.01.31		任伟
 **-------------------------------------------------------------------*/
-bool AceptServerSocket::BindSocket(int iListenSocket)
+bool AcceptServerSocket::BindSocket(int iListenSocket)
 {
 	//----------------------
 	// The sockaddr_in structure specifies the address family,
@@ -192,7 +229,7 @@ bool AceptServerSocket::BindSocket(int iListenSocket)
 ** Date:		Name
 ** 19.01.31		任伟
 **-------------------------------------------------------------------*/
-bool AceptServerSocket::ListenSocket(int iListenSocket)
+bool AcceptServerSocket::ListenSocket(int iListenSocket)
 {
 	if(INVALID_SOCKET == iListenSocket)
 	{
@@ -221,7 +258,7 @@ bool AceptServerSocket::ListenSocket(int iListenSocket)
 ** Date:		Name
 ** 19.01.31		任伟
 **-------------------------------------------------------------------*/
-bool AceptServerSocket::AcceptSocket(int iListenSocket)
+bool AcceptServerSocket::AcceptSocket(int iListenSocket)
 {
 	if(INVALID_SOCKET == iListenSocket)
 	{
@@ -252,14 +289,14 @@ bool AceptServerSocket::AcceptSocket(int iListenSocket)
 ** Date:		Name
 ** 19.02.07		任伟
 **-------------------------------------------------------------------*/
-void AceptServerSocket::DetectSubServer()
+void AcceptServerSocket::DetectSubServer()
 {
-	VecSubServerSocket::iterator itSubServer = m_AceptServerSocket->m_vecSubServerSocket.begin();
-	if(itSubServer == m_AceptServerSocket->m_vecSubServerSocket.end())
+	VecSubServerSocket::iterator itSubServer = m_pAcceptServerSocket->m_vecSubServerSocket.begin();
+	if(itSubServer == m_pAcceptServerSocket->m_vecSubServerSocket.end())
 	{
 		return;
 	}
-	for(;itSubServer != m_AceptServerSocket->m_vecSubServerSocket.end();itSubServer++)
+	for (; itSubServer != m_pAcceptServerSocket->m_vecSubServerSocket.end(); itSubServer++)
 	{
 		//*itSubServer
 		int iSubSocket = *itSubServer;
@@ -277,7 +314,7 @@ void AceptServerSocket::DetectSubServer()
 ** Date:		Name
 ** 19.02.07		任伟
 **-------------------------------------------------------------------*/
-void AceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
+void AcceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 {
 	int recvbuflen = DEFAULT_BUFLEN;
 	char recvbuf[DEFAULT_BUFLEN] = "";
@@ -311,9 +348,9 @@ void AceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 ** Date:		Name
 ** 19.02.12		任伟
 **-------------------------------------------------------------------*/
-int AceptServerSocket::DistributeServerSocket()
+int AcceptServerSocket::DistributeServerSocket()
 {
-	int iSize = m_AceptServerSocket->m_vecSubServerSocket.size();
+	int iSize = m_pAcceptServerSocket->m_vecSubServerSocket.size();
 	
 	int iCount = rand() % iSize;
 
@@ -322,7 +359,7 @@ int AceptServerSocket::DistributeServerSocket()
 	{
 		return 0;
 	}
-	int iSocket = m_AceptServerSocket->m_vecSubServerSocket.at(iCount);
+	int iSocket = m_pAcceptServerSocket->m_vecSubServerSocket.at(iCount);
 
 	return iSocket;
 }
