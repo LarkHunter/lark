@@ -25,5 +25,9 @@ public:
 
 	// 开启网络服务
 	bool StartNetService();
+private:
+
+	// 连接功能服务器
+	bool LinkFunctionServer();
 };
 

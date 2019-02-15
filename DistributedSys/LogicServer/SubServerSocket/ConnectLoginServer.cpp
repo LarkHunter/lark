@@ -1,5 +1,4 @@
-#include "SubServerSocket.h"
-#include <thread>
+#include "ConnectLoginServer.h"
 #include <windows.h>
 
 /*--------------------------------------------------------------------
@@ -36,12 +35,12 @@ void SubHeart(int iListenSocket)
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-SubServer::SubServer()
+ConnectLoginServer::ConnectLoginServer()
 {
 
 }
 /*--------------------------------------------------------------------
-** 名称 : ~SubServer
+** 名称 : ~ConnectLoginServer
 **--------------------------------------------------------------------
 ** 功能 : 释放
 **--------------------------------------------------------------------
@@ -51,12 +50,12 @@ SubServer::SubServer()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-SubServer::~SubServer()
+ConnectLoginServer::~ConnectLoginServer()
 {
-
+	delete th_heartToLoginServer;
 }
 /*--------------------------------------------------------------------
-** 名称 : StartSubServer
+** 名称 : StartConnectLoginServer
 **--------------------------------------------------------------------
 ** 功能 : 开启网络服务
 **--------------------------------------------------------------------
@@ -66,12 +65,12 @@ SubServer::~SubServer()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-bool SubServer::StartSubServer()
+bool ConnectLoginServer::StartNetService()
 { 
 	int iSocket = CreateSocket();
 	if(0 == iSocket)
 	{
-		std::cout <<"CreateSocket Falied " <<std::endl;
+		std::cout <<"To LoginServer: CreateSocket Falied " <<std::endl;
 
 		return false;
 	}
@@ -80,7 +79,6 @@ bool SubServer::StartSubServer()
 	
 	return bResult;
 
-	return true;
 }
 /*--------------------------------------------------------------------
 ** 名称 : CreateSocket
@@ -93,7 +91,7 @@ bool SubServer::StartSubServer()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-int SubServer::CreateSocket()
+int ConnectLoginServer::CreateSocket()
 {
 	//初始化DLL
 	WSADATA wsaData;
@@ -134,7 +132,7 @@ int SubServer::CreateSocket()
 ** Date:		Name
 ** 19.02.06		任伟
 **-------------------------------------------------------------------*/
-bool SubServer::ConnectMainServer(int iListenSocket)
+bool ConnectLoginServer::ConnectMainServer(int iListenSocket)
 {
 	sockaddr_in service;
 
@@ -147,20 +145,16 @@ bool SubServer::ConnectMainServer(int iListenSocket)
 	int iResult = connect(iListenSocket, (SOCKADDR *)&service, sizeof(service));
 	if(0 != iResult)
 	{
-		std::cout <<"ConnectMainServer Failed " << iResult << std::endl;
+		std::cout <<"To LoginServer:  ConnectMainServer Failed " << iResult << std::endl;
 	}
 	else
 	{
-		std::cout << "ConnectMainServer Success!" << std::endl;
+		std::cout << "To LoginServer: ConnectMainServer Success!" << std::endl;
 
 		// 开启心跳
-		std::thread th_Heart(SubHeart, iListenSocket);
-
-		//std::cout << "...." << std::endl;
-		th_Heart.join();
+		th_heartToLoginServer = new std::thread(SubHeart, iListenSocket);
+		
 	}
-
-
 
 	return true;
 }
