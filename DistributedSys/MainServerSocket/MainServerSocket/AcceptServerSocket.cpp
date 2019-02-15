@@ -335,7 +335,7 @@ void AcceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 		wprintf(L"recv failed with error: %d\n", WSAGetLastError());
 		closesocket(iAcceptSocket);
 	}
-	std::cout << "To SubServer:Accept Success" << std::endl;
+	
 }
 
 /*--------------------------------------------------------------------

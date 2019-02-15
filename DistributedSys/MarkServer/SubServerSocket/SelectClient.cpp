@@ -1,6 +1,6 @@
 #include "SelectClient.h"
 
-
+SelectClient * SelectClient::m_pSelectClient = NULL;
 /*--------------------------------------------------------------------
 ** 名称 : SelectClient
 **--------------------------------------------------------------------
@@ -14,6 +14,7 @@
 **-------------------------------------------------------------------*/
 SelectClient::SelectClient()
 {
+	m_pSelectClient = this;
 }
 
 /*--------------------------------------------------------------------
@@ -29,7 +30,7 @@ SelectClient::SelectClient()
 **-------------------------------------------------------------------*/
 SelectClient::~SelectClient()
 {
-
+	delete m_thSelectClient;
 }
 
 /*--------------------------------------------------------------------
@@ -47,7 +48,9 @@ bool SelectClient::InitNetService()
 {
 	int iServerfd = InitSocket();
 
-	DealNetRequest(iServerfd); // 处理网络请求
+	//DealNetRequest(iServerfd); // 处理网络请求
+
+	m_thSelectClient = new std::thread(DealNetRequest,iServerfd);
 
 	return true;
 }
@@ -184,7 +187,7 @@ bool SelectClient::DealNetRequest(int iServerfd)
 			{
 				std::cout << "sock_client "<< sock_client <<"Accept"<< std::endl;
 				
-				m_VecClientFd.push_back(sock_client);
+				m_pSelectClient->m_VecClientFd.push_back(sock_client);
 
 				int iSend = 666;
 				send(sock_client, (char*)&iSend, sizeof(iSend), 0);

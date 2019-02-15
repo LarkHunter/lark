@@ -17,8 +17,11 @@ void SubThread(int iCount)
 }
 int main()
 {
-	int iCount = 9;
-	std::thread myThread(SubThread, iCount);
+	typedef std::vector<int> VectorSocket;
+
+	VectorSocket vecSocket;
+// 	int iCount = 9;
+// 	std::thread myThread(SubThread, iCount);
 
 // 	typedef std::vector<int> VecCount;
 // 

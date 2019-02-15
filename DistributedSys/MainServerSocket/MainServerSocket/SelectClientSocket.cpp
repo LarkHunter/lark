@@ -172,7 +172,7 @@ bool SelectClientSocket::SelectCilentConnect(int iSeverSocketfd)
 		}
 		else if (ret == 0) // ³¬Ê± 0
 		{
-			printf("To Client:timeout!\n");
+			//printf("To Client:timeout!\n");
 
 			continue;
 		}
@@ -227,7 +227,7 @@ int SelectClientSocket::AllocateSubServer()
 	int iCount = rand() % iSize;
 
 	if(iCount <= 0
-		|| iCount >= iSize)
+		|| iCount > iSize)
 	{
 		return 0;
 	}

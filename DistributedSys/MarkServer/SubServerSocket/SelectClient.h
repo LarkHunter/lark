@@ -34,11 +34,14 @@ private:
 	int InitSocket();
 
 	// 处理客户端请求
-	bool DealNetRequest(int iServerfd);
+	static bool DealNetRequest(int iServerfd);
 
 private:
 
+	static SelectClient * m_pSelectClient; // 轮询客户端连接模块
+
 	VecClientFd m_VecClientFd; // 已经连接上的客户端套接字描述符
 
+	std::thread *m_thSelectClient; // 轮询客户端请求线程
 };
 

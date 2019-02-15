@@ -17,7 +17,7 @@ void SubHeart(int iListenSocket)
 	const char *buf = "Alived";
 	while(1)
 	{
-		cout <<"buf = " << buf << "sizeof(buf)!"<< strlen(buf) <<endl;
+		//cout <<"buf = " << buf << "sizeof(buf)!"<< strlen(buf) <<endl;
 		send(iListenSocket,buf, strlen(buf),0);
 
 		Sleep(5000);
@@ -146,6 +146,8 @@ bool ConnectLoginServer::ConnectMainServer(int iListenSocket)
 	if(0 != iResult)
 	{
 		std::cout <<"To LoginServer:  ConnectMainServer Failed " << iResult << std::endl;
+
+		return false;
 	}
 	else
 	{

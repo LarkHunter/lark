@@ -6,13 +6,18 @@
 int main()
 {
 	ConnectLoginServer m_SubServer;
-	m_SubServer.StartNetService();
-
 	SelectClient m_SelectClient;
-	m_SelectClient.InitNetService();
+
+	bool bResult = m_SubServer.StartNetService();
+
+	if(bResult)
+	{
+		m_SelectClient.InitNetService();
+	}
+	
 
 	std::cout <<"......." << std::endl;
-	//system("pause");
+	system("pause");
 
 	return 0;
 }

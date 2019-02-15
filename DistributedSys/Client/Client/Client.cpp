@@ -74,7 +74,7 @@ bool Client::StartNetService()
 
 	service.sin_family = AF_INET;
 	service.sin_addr.s_addr = inet_addr("127.0.0.1");
-	service.sin_port = htons(27015);
+	service.sin_port = htons(6666);
 
 	//----------------------
 	// Bind the socket.
@@ -105,7 +105,6 @@ bool Client::StartNetService()
 			std::cout << "Received Error"<< WSAGetLastError()<< std::endl;
 		}
 	}
-
 
 	return true;
 }
