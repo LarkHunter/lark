@@ -94,7 +94,8 @@ bool Client::StartNetService()
 		iResult = recv(iListenSocket, recvbuf, recvbuflen, 0);
 		if(iResult > 0)
 		{
-			std::cout << "  = " << recvbuf << std::endl;
+			std::cout << "  recvbuf= " << recvbuf << std::endl;
+			printf("recvbuf = %s\n", recvbuf);
 		}
 		else if(0 == iResult)
 		{

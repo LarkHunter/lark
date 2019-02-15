@@ -195,8 +195,11 @@ bool SelectClientSocket::SelectCilentConnect(int iSeverSocketfd)
 				m_vecClientFd.push_back(sock_client);
 
 				// 为客户端分配子服务器 
-				int iSubServerSocket = AllocateSubServer(); 
-				send(sock_client, (char*)&iSubServerSocket, sizeof(iSubServerSocket), 0);
+				int iSubServerSocket = AllocateSubServer();
+				char buffer[50];
+				sprintf(buffer,"%d",iSubServerSocket);
+
+				send(sock_client, buffer, sizeof(buffer), 0);
 
 			}
 
@@ -224,14 +227,20 @@ int SelectClientSocket::AllocateSubServer()
 
 	int iSize = static_cast<int>(vecSubServerSocket.size());
 
-	int iCount = rand() % iSize;
-
-	if(iCount <= 0
-		|| iCount > iSize)
+	if(0 == iSize)
 	{
 		return 0;
 	}
+	int iCount = rand() % iSize;
 
+	if(iCount < 0)
+	{
+		return 0;
+	}
+	if(iCount == iSize)
+	{
+		iCount -= 1;
+	}
 	int iSocket = vecSubServerSocket.at(iCount);
 
 	return iSocket;

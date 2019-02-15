@@ -17,9 +17,21 @@ void SubThread(int iCount)
 }
 int main()
 {
-	typedef std::vector<int> VectorSocket;
+	char buffer[50];
+	int iCount = 125;
+	sprintf(buffer, "Socket = %d", iCount);
+	std::cout <<"buffer"<< buffer << std::endl;
 
-	VectorSocket vecSocket;
+// 	typedef std::vector<int> VectorSocket;
+// 
+// 	VectorSocket vecSocket;
+// 
+// 	vecSocket.push_back(1);
+
+	//int iSize = vecSocket.size();
+
+	//std::cout << "vecSocket.at(0) = " << vecSocket.at(0) << std::endl;
+	//std::cout <<"iSize"<<iSize << std::endl;
 // 	int iCount = 9;
 // 	std::thread myThread(SubThread, iCount);
 
