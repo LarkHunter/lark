@@ -323,8 +323,8 @@ void AcceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 	int iResult = recv(iAcceptSocket, recvbuf, recvbuflen, 0);
 	if(iResult > 0)
 	{
-		wprintf(L"Bytes received: %d\n", iResult);
-		std::cout <<"[AcceptSocket]"<< iAcceptSocket << "Reiceived Value is " << recvbuf << " Length is  " << recvbuflen << std::endl;
+		//wprintf(L"Bytes received: %d\n", iResult);
+		//std::cout <<"[AcceptSocket]"<< iAcceptSocket << "Reiceived Value is " << recvbuf << " Length is  " << recvbuflen << std::endl;
 	}
 	else if(0 == iResult)
 	{

@@ -32,6 +32,12 @@ public:
 
 	// 开启网络服务
 	bool StartNetService();
+
+	// 网络测试
+	bool StartNetServiceTest();
+
+	// 开始广播
+	static void SendBroadCast();
 private:
 
 	// 连接功能服务器
@@ -40,7 +46,15 @@ private:
 	// 等待广播消息
 	static void BroadCast(int iServerFd);
 
+	// 获取服务器id
+	static int QueryServerSocket();
+
 private:
+
+	static Client* m_pClient; //客户端指针
+
 	std::thread* th_BroadCast; //广播
+
+	int m_iSubServerSocket; // 服务器套接字
 };
 

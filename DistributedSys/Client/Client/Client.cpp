@@ -1,7 +1,8 @@
 #include "Client.h"
 #define DEFAULT_BUFLEN 256
+#define D_BROADCAST_SEND 64
 
-
+Client* Client::m_pClient = NULL;
 /*--------------------------------------------------------------------
 ** 名称 : Client
 **--------------------------------------------------------------------
@@ -15,6 +16,7 @@
 **-------------------------------------------------------------------*/
 Client::Client()
 {
+	m_pClient = this;
 }
 
 /*--------------------------------------------------------------------
@@ -98,26 +100,12 @@ bool Client::StartNetService()
 			std::cout << "  recvbuf= " << recvbuf << std::endl;
 			printf("recvbuf = %s\n", recvbuf);
 
-			int iMarkSocket = LinkFunctionServer("127.0.0.1",9999);
-			if(iMarkSocket > 0)
+			m_iSubServerSocket = LinkFunctionServer("127.0.0.1",9999);
+
+			if(m_iSubServerSocket > 0)
 			{
-				//th_BroadCast = new std::thread(BroadCast,static_cast<int>(iMarkSocket)); //收听广播
+				th_BroadCast = new std::thread(BroadCast,static_cast<int>(m_iSubServerSocket)); //收听广播
 
-				const char*pszBuffer = "OK BroadCase";
-				send(iMarkSocket,pszBuffer,sizeof(pszBuffer),0);
-
-				char recvbuf[DEFAULT_BUFLEN];
-				int recvbuflen = DEFAULT_BUFLEN;
-
-				int iResult = recv(iMarkSocket, recvbuf, recvbuflen, 0);
-				if(iResult >0)
-				{
-					std::cout <<"ok recvbuf = "<< recvbuf << std::endl;
-				}
-				else
-				{
-					std::cout <<"..." << std::endl;
-				}
 			}
 		}
 		else if(0 == iResult)
@@ -132,6 +120,56 @@ bool Client::StartNetService()
 
 	return true;
 }
+/*--------------------------------------------------------------------
+** 名称 : StartNetServiceTest
+**--------------------------------------------------------------------
+** 功能 : 网络测试
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18		任伟
+**-------------------------------------------------------------------*/
+bool Client::StartNetServiceTest()
+{
+	m_iSubServerSocket = LinkFunctionServer("127.0.0.1", 9999);
+
+	if(m_iSubServerSocket > 0)
+	{
+		th_BroadCast = new std::thread(BroadCast, static_cast<int>(m_iSubServerSocket)); //收听广播
+
+	}
+	return true;
+}
+
+/*--------------------------------------------------------------------
+** 名称 : SendBroadCast
+**--------------------------------------------------------------------
+** 功能 : 开始广播
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18		任伟
+**-------------------------------------------------------------------*/
+void Client::SendBroadCast()
+{
+	char chSend[D_BROADCAST_SEND];
+
+	while(true)
+	{
+		memset(chSend, 0, strlen(chSend));
+
+		gets_s(chSend);
+		int iServerSocket = QueryServerSocket();
+
+		//send(iServerSocket, chSend, sizeof(chSend), 0);
+	}
+	
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : LinkFunctionServer
 **--------------------------------------------------------------------
@@ -188,14 +226,16 @@ int Client::LinkFunctionServer(const char* pszIP, int iPort)
 	iResult = connect(iListenSocket, (SOCKADDR *)&service, sizeof(service));
 	if(0 != iResult)
 	{
-		std::cout << "ConnectMainServer Failed " << iResult << std::endl;
+		std::cout << "ConnectFunctionServer Failed " << iResult << std::endl;
+
+		return 0;
 	}
 	else
 	{
-		std::cout << "ConnectMainServer Success " << iResult << std::endl;
+		std::cout << "ConnectFunctionServer Success " << iResult << std::endl;
 
 		const char* pszBuffer = "Hello Users";
-		send(iListenSocket, pszBuffer, sizeof(pszBuffer), 0);
+		send(iListenSocket, pszBuffer, strlen(pszBuffer), 0);
 	}
 
 	return iListenSocket;
@@ -215,7 +255,6 @@ void Client::BroadCast(int iServerFd)
 {
 	while(1)
 	{
-		Sleep(5000);
 		char recvbuf[DEFAULT_BUFLEN];
 		int recvbuflen = DEFAULT_BUFLEN;
 
@@ -228,10 +267,29 @@ void Client::BroadCast(int iServerFd)
 		{
 			std::cout << "Connection Closed!" << std::endl;
 		}
-		else
-		{
-			std::cout << "Received Error" << WSAGetLastError() << std::endl;
-		}
+// 		else
+// 		{
+// 			std::cout << "Received Error" << WSAGetLastError() << std::endl;
+// 		}
+
+		//Sleep(5000);
 	}
+}
+/*--------------------------------------------------------------------
+** 名称 : QueryServerSocket
+**--------------------------------------------------------------------
+** 功能 : 获取服务器套接字
+**--------------------------------------------------------------------
+** 参数 : NULL 
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18		任伟
+**-------------------------------------------------------------------*/
+int Client::QueryServerSocket()
+{
+	int iServerSocket = m_pClient->m_iSubServerSocket;
+
+	return iServerSocket;
 }
 

@@ -17,13 +17,31 @@ void SubThread(int iCount)
 }
 int main()
 {
-	const char*pszIP = "127.0.0.1";
+	while(1)
+	{
+		char ch[100];
+		gets_s(ch);
 
-	const char* pszIPUse = pszIP;
+		std::cout << "ch == "  << ch << std::endl;
 
-	std::cout <<"pszIPUse" << pszIPUse << std::endl;
+		int a = 9;
+		if(a>0)
+		{
+			break;
+		}
+	}
+	
 
-	std::cout << "sizeof(pszIP)"<< sizeof(pszIP)<< std::endl;
+
+// 	const char*pszIP = "127.0.0.1";
+// 
+// 	const char* pszIPUse = pszIP;
+// 
+// 	std::cout <<"pszIPUse" << pszIPUse << std::endl;
+// 
+// 	std::cout << "sizeof(pszIP)"<< sizeof(pszIP)<< std::endl;
+
+
 // 	char buffer[50];
 // 	int iCount = 125;
 // 	sprintf(buffer, "Socket = %d", iCount);

@@ -32,6 +32,7 @@ SelectClient::~SelectClient()
 {
 	delete m_thSelectClient;
 
+	delete m_thBroadCast;
 }
 
 /*--------------------------------------------------------------------
@@ -49,8 +50,11 @@ bool SelectClient::InitNetService()
 {
 	int iServerfd = InitSocket();
 
-	m_thSelectClient = new std::thread(th_DealClientConnect,iServerfd); // 处理客户端连接
+	// 处理客户端连接
+	m_thSelectClient = new std::thread(th_DealClientConnect,iServerfd); 
 
+	// 新增处理广播
+	m_thBroadCast = new std::thread(th_BroadCast);
 	return true;
 }
 
@@ -144,7 +148,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 	fd_set client_fdset;	/*监控文件描述符集合*/
 	struct timeval tv;		/*超时返回时间*/
 
-	tv.tv_sec = 5;
+	tv.tv_sec = 10;
 	tv.tv_usec = 0;
 	while(1)
 	{
@@ -166,7 +170,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 		}
 		else if(ret == 0) // 超时 0
 		{
-			printf("timeout!\n");
+			//printf("timeout!\n");
 	
 			continue;
 		}
@@ -176,21 +180,20 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 			struct sockaddr_in client_addr;
 			size_t size = sizeof(struct sockaddr_in);
 
-			int sock_client = accept(iServerfd, NULL, NULL);
-			if(sock_client < 0)
+			int iSock_client = accept(iServerfd, NULL, NULL);
+			if(iSock_client < 0)
 			{
 				perror("accept error!\n");
 				continue;
 			}
 			else
 			{
-				std::cout << "sock_client "<< sock_client <<"Accept"<< std::endl;
+				std::cout << "sock_client "<< iSock_client <<"Accept"<< std::endl;
 				
-				m_pSelectClient->m_VecClientFd.push_back(sock_client);
+				m_pSelectClient->m_VecClientFd.push_back(iSock_client);
 
-				// 广播
-				DealBroadCast(sock_client);
-
+				SetSocketClient(iSock_client);
+				
 				//int iSend = 666;
 			//	send(sock_client, (char*)&iSend, sizeof(iSend), 0);
 
@@ -202,6 +205,41 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 	return true;
 }
 /*--------------------------------------------------------------------
+** 名称 : th_BroadCast
+**--------------------------------------------------------------------
+** 功能 : 处理广播
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18		任伟
+**-------------------------------------------------------------------*/
+bool SelectClient::th_BroadCast()
+{
+	
+	while(true)
+	{
+		int iSock_Client = QuerySockClient();
+		//DealBroadCast(iSock_Client);
+
+		char buffer[256];//如果是1024 那么会分批发送4次
+		memset(buffer, 0, sizeof(buffer));
+		int ret = recv(iSock_Client, buffer, 1024, MSG_PEEK); // 涉及到阻塞
+		if(ret < 0)
+		{
+
+		}
+		else
+		{
+			std::cout << "buffer"<< buffer << std::endl;
+		}
+
+		Sleep(5000);
+	}
+}
+
+/*--------------------------------------------------------------------
 ** 名称 : DealBroadCast
 **--------------------------------------------------------------------
 ** 功能 : 处理广播
@@ -212,24 +250,69 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 ** Date:		Name
 ** 19.02.10		任伟
 **-------------------------------------------------------------------*/
-void SelectClient::DealBroadCast(int sock_client)
+void SelectClient::DealBroadCast(int sock_client) // 设计成类似群聊
 {
-	char buffer[1024];
+	char buffer[256];//如果是1024 那么会分批发送4次
 	memset(buffer, 0, sizeof(buffer));
 	
-	int ret = recv(sock_client, buffer, 1024, 0);
+	//int ret = recv(sock_client, buffer, 1024, 0); // 涉及到阻塞
+	sockaddr_in SenderAddr;
+	int SenderAddrSize = sizeof(SenderAddr);
+
+	//int ret = recvfrom(sock_client, buffer, 256, MSG_PEEK, (SOCKADDR *)& SenderAddr, &SenderAddrSize);
+	int ret = recv(sock_client, buffer, 1024, MSG_PEEK); // 涉及到阻塞
 	if(ret < 0)
 	{
-		perror("recv error!\n");
+		//perror("recv error!\n");
 				
-		WSACleanup();
+		//WSACleanup();
 		return;
 	}
-
-	VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
-	for(itClientFd;itClientFd!= m_pSelectClient->m_VecClientFd.end();itClientFd++)
+	else if(ret > 0)
 	{
-		int iClientFd = *itClientFd;
-		send(iClientFd, buffer,sizeof(buffer),0);
+		std::cout << "buffer = " << buffer << std::endl;
+		VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
+		for (itClientFd; itClientFd != m_pSelectClient->m_VecClientFd.end(); itClientFd++)
+		{
+			int iClientFd = *itClientFd;
+			send(iClientFd, buffer, sizeof(buffer), 0);
+		}
 	}
+
+}
+/*--------------------------------------------------------------------
+** 名称 : QuerySockClient
+**--------------------------------------------------------------------
+** 功能 : 查询新增客户端套接字
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : 新增客户端套接字
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18	任伟
+**-------------------------------------------------------------------*/
+int SelectClient::QuerySockClient()
+{
+	int iSocket_client = m_pSelectClient->m_iSock_client;
+
+	return iSocket_client;
+}
+/*--------------------------------------------------------------------
+** 名称 : SetSocketClient
+**--------------------------------------------------------------------
+** 功能 : 设置新增客户端套接字
+**--------------------------------------------------------------------
+** 参数 : iSock_client 新增客户端套接字
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.18	任伟
+**-------------------------------------------------------------------*/
+void SelectClient::SetSocketClient(int iSock_client)
+{
+	if(iSock_client >0)
+	{
+		m_pSelectClient->m_iSock_client = iSock_client;
+	}
+	
 }
