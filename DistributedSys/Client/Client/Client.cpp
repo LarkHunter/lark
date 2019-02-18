@@ -1,5 +1,5 @@
 #include "Client.h"
-#define DEFAULT_BUFLEN 512
+#define DEFAULT_BUFLEN 256
 
 
 /*--------------------------------------------------------------------
@@ -30,6 +30,7 @@ Client::Client()
 **-------------------------------------------------------------------*/
 Client::~Client()
 {
+	delete th_BroadCast;
 }
 
 /*--------------------------------------------------------------------
@@ -96,6 +97,28 @@ bool Client::StartNetService()
 		{
 			std::cout << "  recvbuf= " << recvbuf << std::endl;
 			printf("recvbuf = %s\n", recvbuf);
+
+			int iMarkSocket = LinkFunctionServer("127.0.0.1",9999);
+			if(iMarkSocket > 0)
+			{
+				//th_BroadCast = new std::thread(BroadCast,static_cast<int>(iMarkSocket)); //收听广播
+
+				const char*pszBuffer = "OK BroadCase";
+				send(iMarkSocket,pszBuffer,sizeof(pszBuffer),0);
+
+				char recvbuf[DEFAULT_BUFLEN];
+				int recvbuflen = DEFAULT_BUFLEN;
+
+				int iResult = recv(iMarkSocket, recvbuf, recvbuflen, 0);
+				if(iResult >0)
+				{
+					std::cout <<"ok recvbuf = "<< recvbuf << std::endl;
+				}
+				else
+				{
+					std::cout <<"..." << std::endl;
+				}
+			}
 		}
 		else if(0 == iResult)
 		{
@@ -110,22 +133,29 @@ bool Client::StartNetService()
 	return true;
 }
 /*--------------------------------------------------------------------
-** 名称 : ConnectFunctionServer
+** 名称 : LinkFunctionServer
 **--------------------------------------------------------------------
 ** 功能 : 连接功能服务器
 **--------------------------------------------------------------------
-** 参数 : NULL
+** 参数 : pszIP IP
+** 参数 : iPort 端口
+** 参数 : iSocket 套接字
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
 ** 19.02.15		任伟
 **-------------------------------------------------------------------*/
-bool Client::LinkFunctionServer()
+int Client::LinkFunctionServer(const char* pszIP, int iPort)
 {
+	if(iPort <= 0)
+	{
+		return 0;
+	}
+
 	//初始化DLL
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (NO_ERROR != iResult)
+	if(NO_ERROR != iResult)
 	{
 		return 0;
 	}
@@ -134,13 +164,13 @@ bool Client::LinkFunctionServer()
 	SOCKET iListenSocket = INVALID_SOCKET;
 	iListenSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-	if (INVALID_SOCKET == iListenSocket)
+	if(INVALID_SOCKET == iListenSocket)
 	{
 		std::cout << "Create Socket Error!" << std::endl;
 
 		WSACleanup();
 
-		return false;
+		return 0;
 	}
 	else
 	{
@@ -150,8 +180,8 @@ bool Client::LinkFunctionServer()
 	sockaddr_in service;
 
 	service.sin_family = AF_INET;
-	service.sin_addr.s_addr = inet_addr("127.0.0.1");
-	service.sin_port = htons(27015);
+	service.sin_addr.s_addr = inet_addr(pszIP);
+	service.sin_port = htons(iPort);
 
 	//----------------------
 	// Bind the socket.
@@ -163,5 +193,45 @@ bool Client::LinkFunctionServer()
 	else
 	{
 		std::cout << "ConnectMainServer Success " << iResult << std::endl;
+
+		const char* pszBuffer = "Hello Users";
+		send(iListenSocket, pszBuffer, sizeof(pszBuffer), 0);
+	}
+
+	return iListenSocket;
+}
+/*--------------------------------------------------------------------
+** 名称 : BroadCast
+**--------------------------------------------------------------------
+** 功能 : 广播
+**--------------------------------------------------------------------
+** 参数 : iServerFd 服务器套接字
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.15		任伟
+**-------------------------------------------------------------------*/
+void Client::BroadCast(int iServerFd)
+{
+	while(1)
+	{
+		Sleep(5000);
+		char recvbuf[DEFAULT_BUFLEN];
+		int recvbuflen = DEFAULT_BUFLEN;
+
+		int iResult = recv(iServerFd, recvbuf, recvbuflen, 0);
+		if(iResult > 0)
+		{
+			std::cout << "Reveived BroadCast "<< recvbuf << std::endl;
+		}
+		else if (0 == iResult)
+		{
+			std::cout << "Connection Closed!" << std::endl;
+		}
+		else
+		{
+			std::cout << "Received Error" << WSAGetLastError() << std::endl;
+		}
 	}
 }
+

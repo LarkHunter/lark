@@ -41,7 +41,6 @@ void AcceptServerSocket::AcceptSubServerConnect(int iListenSocket)
 	{
 		m_pAcceptServerSocket->AcceptSocket(iListenSocket);
 		Sleep(5000);
-		std::cout << "To SubServer: Accept" << std::endl;
 	}
 }
 
@@ -273,10 +272,12 @@ bool AcceptServerSocket::AcceptSocket(int iListenSocket)
 	{
 		m_vecSubServerSocket.push_back(iAcceptSocket);
 
-		int iSocket = DistributeServerSocket();
-		std::cout <<"Accept SubServer Socket" << iAcceptSocket << std::endl;
+		std::cout <<"To SubServer:Accept SubServer Socket" << iAcceptSocket << std::endl;
 	}
-
+	else
+	{
+		std::cout << "To SubServer: Accept Failed" << std::endl;
+	}
 	return true;
 }
 /*--------------------------------------------------------------------
@@ -336,31 +337,4 @@ void AcceptServerSocket::DetectSubServerConnect(int iAcceptSocket)
 		closesocket(iAcceptSocket);
 	}
 	
-}
-
-/*--------------------------------------------------------------------
-** 名称 : DistributeServerSocket
-**--------------------------------------------------------------------
-** 功能 : 分配服务器
-**--------------------------------------------------------------------
-** 参数 : NULL 
-** 返值 : NULL
-**--------------------------------------------------------------------
-** Date:		Name
-** 19.02.12		任伟
-**-------------------------------------------------------------------*/
-int AcceptServerSocket::DistributeServerSocket()
-{
-	int iSize = m_pAcceptServerSocket->m_vecSubServerSocket.size();
-	
-	int iCount = rand() % iSize;
-
-	if(iCount <=0 
-		||iCount>=iSize)
-	{
-		return 0;
-	}
-	int iSocket = m_pAcceptServerSocket->m_vecSubServerSocket.at(iCount);
-
-	return iSocket;
 }

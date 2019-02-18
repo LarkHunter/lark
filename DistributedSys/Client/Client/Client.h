@@ -2,9 +2,16 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include<iostream>
-
+#include<thread>
 #pragma comment(lib, "ws2_32.lib")  //加载 ws2_32.dll
 
+//网络地址
+struct STNetAddress
+{
+	const char* pszIp;
+	int iPort;
+	int iSocket;
+};
 /*---------------------------------------------------------------------------
 ** 类名 : Client
 **---------------------------------------------------------------------------
@@ -28,6 +35,12 @@ public:
 private:
 
 	// 连接功能服务器
-	bool LinkFunctionServer();
+	int LinkFunctionServer(const char*pszIP, int iPort);
+	
+	// 等待广播消息
+	static void BroadCast(int iServerFd);
+
+private:
+	std::thread* th_BroadCast; //广播
 };
 

@@ -17,10 +17,17 @@ void SubThread(int iCount)
 }
 int main()
 {
-	char buffer[50];
-	int iCount = 125;
-	sprintf(buffer, "Socket = %d", iCount);
-	std::cout <<"buffer"<< buffer << std::endl;
+	const char*pszIP = "127.0.0.1";
+
+	const char* pszIPUse = pszIP;
+
+	std::cout <<"pszIPUse" << pszIPUse << std::endl;
+
+	std::cout << "sizeof(pszIP)"<< sizeof(pszIP)<< std::endl;
+// 	char buffer[50];
+// 	int iCount = 125;
+// 	sprintf(buffer, "Socket = %d", iCount);
+// 	std::cout <<"buffer"<< buffer << std::endl;
 
 // 	typedef std::vector<int> VectorSocket;
 // 

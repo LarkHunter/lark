@@ -31,6 +31,7 @@ SelectClient::SelectClient()
 SelectClient::~SelectClient()
 {
 	delete m_thSelectClient;
+
 }
 
 /*--------------------------------------------------------------------
@@ -48,9 +49,7 @@ bool SelectClient::InitNetService()
 {
 	int iServerfd = InitSocket();
 
-	//DealNetRequest(iServerfd); // 处理网络请求
-
-	m_thSelectClient = new std::thread(DealNetRequest,iServerfd);
+	m_thSelectClient = new std::thread(th_DealClientConnect,iServerfd); // 处理客户端连接
 
 	return true;
 }
@@ -96,7 +95,7 @@ int SelectClient::InitSocket()
 	sockaddr_in service;
 	service.sin_family = AF_INET;
 	service.sin_addr.s_addr = inet_addr("127.0.0.1");
-	service.sin_port = htons(27015);
+	service.sin_port = htons(9999);
 
 	//----------------------
 	// Bind the socket.
@@ -125,7 +124,7 @@ int SelectClient::InitSocket()
 	return iListenSocket;
 }
 /*--------------------------------------------------------------------
-** 名称 : DealNetRequest
+** 名称 : th_DealClientConnect
 **--------------------------------------------------------------------
 ** 功能 : 处理网络请求
 **--------------------------------------------------------------------
@@ -135,7 +134,7 @@ int SelectClient::InitSocket()
 ** Date:		Name
 ** 19.02.10		任伟
 **-------------------------------------------------------------------*/
-bool SelectClient::DealNetRequest(int iServerfd)
+bool SelectClient::th_DealClientConnect(int iServerfd)
 {
 	if(0 == iServerfd)
 	{
@@ -189,27 +188,48 @@ bool SelectClient::DealNetRequest(int iServerfd)
 				
 				m_pSelectClient->m_VecClientFd.push_back(sock_client);
 
-				int iSend = 666;
-				send(sock_client, (char*)&iSend, sizeof(iSend), 0);
+				// 广播
+				DealBroadCast(sock_client);
+
+				//int iSend = 666;
+			//	send(sock_client, (char*)&iSend, sizeof(iSend), 0);
 
 			}
 
-// 			char buffer[1024];
-// 			memset(buffer, 0, sizeof(buffer));
-// 
-// 			ret = recv(sock_client, buffer, 1024, 0);
-// 			if(ret < 0)
-// 			{
-// 				perror("recv error!\n");
-// 				
-// 				WSACleanup();
-// 
-// 				//return f;
-// 			}
-
-			//printf("recv : %s\n", buffer);
 		}
 
 	}
 	return true;
+}
+/*--------------------------------------------------------------------
+** 名称 : DealBroadCast
+**--------------------------------------------------------------------
+** 功能 : 处理广播
+**--------------------------------------------------------------------
+** 参数 : sock_client 客户端连接
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.10		任伟
+**-------------------------------------------------------------------*/
+void SelectClient::DealBroadCast(int sock_client)
+{
+	char buffer[1024];
+	memset(buffer, 0, sizeof(buffer));
+	
+	int ret = recv(sock_client, buffer, 1024, 0);
+	if(ret < 0)
+	{
+		perror("recv error!\n");
+				
+		WSACleanup();
+		return;
+	}
+
+	VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
+	for(itClientFd;itClientFd!= m_pSelectClient->m_VecClientFd.end();itClientFd++)
+	{
+		int iClientFd = *itClientFd;
+		send(iClientFd, buffer,sizeof(buffer),0);
+	}
 }

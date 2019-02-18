@@ -1,5 +1,6 @@
-工程说明:
+﻿工程说明:
 1、client 是客户端工程
-2、MainServerSocket是主服务器工程
-3、SubServerSocket是功能服务器工程
-4、Test是功能服务器对接客户端部分，采用的select的连接方式
+2、LoginServer是登录服务器工程
+3、MarkServer是功能服务器工程
+4、Test是测试服务器，对接客户端部分，采用的select的连接方式
+5、MarkServer 联网失败，按下❌会崩溃

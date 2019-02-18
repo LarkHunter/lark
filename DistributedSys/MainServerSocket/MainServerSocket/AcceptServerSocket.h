@@ -61,9 +61,6 @@ private:
 	// 检测子服务器网络连接
 	static void DetectSubServerConnect(int iAcceptSocket);
 
-	// 分配功能服务器
-	static int DistributeServerSocket();
-
 private:
 	static AcceptServerSocket* m_pAcceptServerSocket;
 

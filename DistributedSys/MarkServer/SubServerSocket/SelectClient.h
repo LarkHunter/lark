@@ -33,9 +33,11 @@ private:
 	// 初始化套接字
 	int InitSocket();
 
-	// 处理客户端请求
-	static bool DealNetRequest(int iServerfd);
+	// 响应客户端连接
+	static bool th_DealClientConnect(int iServerfd);
 
+	// 处理广播
+	static void DealBroadCast(int sock_client);
 private:
 
 	static SelectClient * m_pSelectClient; // 轮询客户端连接模块
@@ -43,5 +45,6 @@ private:
 	VecClientFd m_VecClientFd; // 已经连接上的客户端套接字描述符
 
 	std::thread *m_thSelectClient; // 轮询客户端请求线程
+
 };
 
