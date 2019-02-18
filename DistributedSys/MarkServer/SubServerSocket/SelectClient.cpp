@@ -221,21 +221,9 @@ bool SelectClient::th_BroadCast()
 	while(true)
 	{
 		int iSock_Client = QuerySockClient();
-		//DealBroadCast(iSock_Client);
+		DealBroadCast(iSock_Client);
 
-		char buffer[256];//如果是1024 那么会分批发送4次
-		memset(buffer, 0, sizeof(buffer));
-		int ret = recv(iSock_Client, buffer, 1024, MSG_PEEK); // 涉及到阻塞
-		if(ret < 0)
-		{
 
-		}
-		else
-		{
-			std::cout << "buffer"<< buffer << std::endl;
-		}
-
-		Sleep(5000);
 	}
 }
 
@@ -255,12 +243,23 @@ void SelectClient::DealBroadCast(int sock_client) // 设计成类似群聊
 	char buffer[256];//如果是1024 那么会分批发送4次
 	memset(buffer, 0, sizeof(buffer));
 	
-	//int ret = recv(sock_client, buffer, 1024, 0); // 涉及到阻塞
-	sockaddr_in SenderAddr;
-	int SenderAddrSize = sizeof(SenderAddr);
+	WSABUF DataBuf;
+	DataBuf.len = 256;
+	DataBuf.buf = buffer;
 
-	//int ret = recvfrom(sock_client, buffer, 256, MSG_PEEK, (SOCKADDR *)& SenderAddr, &SenderAddrSize);
-	int ret = recv(sock_client, buffer, 1024, MSG_PEEK); // 涉及到阻塞
+	DWORD RecvBytes, Flags;
+	Flags = 0;
+	WSAOVERLAPPED RecvOverlapped;
+	SecureZeroMemory((PVOID)& RecvOverlapped, sizeof(WSAOVERLAPPED));
+
+	// Create an event handle and setup an overlapped structure.
+	RecvOverlapped.hEvent = WSACreateEvent();
+ 	if(NULL == RecvOverlapped.hEvent)
+ 	{
+ 		closesocket(sock_client);
+		return;
+ 	}
+	int ret = WSARecv(sock_client, &DataBuf, 1, &RecvBytes, &Flags, &RecvOverlapped, NULL);
 	if(ret < 0)
 	{
 		//perror("recv error!\n");
