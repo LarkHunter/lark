@@ -150,6 +150,13 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 
 	tv.tv_sec = 10;
 	tv.tv_usec = 0;
+
+	int conn_amount = 0;    //用来记录描述符数量
+	SOCKET client_sockfd[5] = {0};   //存放活动的sockfd
+	int iMaxsock;            //监控文件描述符中最大的文件号
+	iMaxsock = iServerfd;
+
+	char buffer[256];
 	while(1)
 	{
 		/*初始化文件描述符号到集合*/
@@ -158,15 +165,24 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 		/*加入服务器描述符*/
 		FD_SET(iServerfd, &client_fdset);
 
-		int ret = select(iServerfd + 1, &client_fdset, NULL, NULL, &tv);
+		//把活动的句柄加入到文件描述符中
+		for (int i = 0; i < 5; ++i)
+		{
+			//程序中Listen中参数设为5,故i必须小于5
+			if (client_sockfd[i] != 0)
+			{
+				FD_SET(client_sockfd[i], &client_fdset);
+			}
+		}
+		int ret = select(iMaxsock + 1, &client_fdset, NULL, NULL, &tv);
 		if(ret < 0) // 出错 -1
 		{
-			perror("select error!\n");
+			//perror("select error!\n");
 			
-			Sleep(5000);
-			continue;
+			int i = WSAGetLastError();
+			//Sleep(5000);
+			break;
 			
-			//break;
 		}
 		else if(ret == 0) // 超时 0
 		{
@@ -175,6 +191,28 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 			continue;
 		}
 
+
+		// 检测是否有网络IO请求
+		for (int i = 0; i < conn_amount; i++)
+		{
+			if (FD_ISSET(client_sockfd[i], &client_fdset))
+			{
+				ret = recv(client_sockfd[i], buffer, 1024, 0);
+				if (ret < 0)
+				{
+					//return -1;
+					FD_CLR(client_sockfd[i], &client_fdset);
+					client_sockfd[i] = 0;
+				}
+				else
+				{
+					std::cout << "buffer = " << buffer << std::endl;
+				}
+				
+			}
+		}
+
+		// 检测是否有新的连接
 		if(FD_ISSET(iServerfd, &client_fdset))
 		{
 			struct sockaddr_in client_addr;
@@ -186,20 +224,19 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 				perror("accept error!\n");
 				continue;
 			}
-			else
+
+			// 把连接加入到新的文件描述符集合中
+			if(conn_amount < 5)
 			{
-				std::cout << "sock_client "<< iSock_client <<"Accept"<< std::endl;
+				client_sockfd[conn_amount++] = iSock_client;
 				
+				std::cout << "sock_client " << iSock_client << "Accept" << std::endl;
 				m_pSelectClient->m_VecClientFd.push_back(iSock_client);
-
-				SetSocketClient(iSock_client);
-				
-				//int iSend = 666;
-			//	send(sock_client, (char*)&iSend, sizeof(iSend), 0);
-
 			}
+		
 
 		}
+
 
 	}
 	return true;
