@@ -32,7 +32,6 @@ SelectClient::~SelectClient()
 {
 	delete m_thSelectClient;
 
-	delete m_thBroadCast;
 }
 
 /*--------------------------------------------------------------------
@@ -51,10 +50,7 @@ bool SelectClient::InitNetService()
 	int iServerfd = InitSocket();
 
 	// 处理客户端连接
-	m_thSelectClient = new std::thread(th_DealClientConnect,iServerfd); 
-
-	// 新增处理广播
-	m_thBroadCast = new std::thread(th_BroadCast);
+	m_thSelectClient = new std::thread(th_DealClientConnect,iServerfd); 	
 	return true;
 }
 
@@ -100,7 +96,7 @@ int SelectClient::InitSocket()
 	service.sin_family = AF_INET;
 	service.sin_addr.s_addr = inet_addr("127.0.0.1");
 	service.sin_port = htons(9999);
-
+	//service.sin_zero = 0;
 	//----------------------
 	// Bind the socket.
 	iResult = bind(iListenSocket, (SOCKADDR *)&service, sizeof(service));
@@ -157,6 +153,8 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 	iMaxsock = iServerfd;
 
 	char buffer[256];
+	memset(buffer, '\0', sizeof(buffer));
+
 	while(1)
 	{
 		/*初始化文件描述符号到集合*/
@@ -177,7 +175,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 		int ret = select(iMaxsock + 1, &client_fdset, NULL, NULL, &tv);
 		if(ret < 0) // 出错 -1
 		{
-			//perror("select error!\n");
+			perror("select error!\n");
 			
 			int i = WSAGetLastError();
 			
@@ -197,7 +195,8 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 		{
 			if (FD_ISSET(client_sockfd[i], &client_fdset))
 			{
-				ret = recv(client_sockfd[i], buffer, 1024, 0);
+				int iClientFd = client_sockfd[i];
+				ret = recv(iClientFd, buffer, 1024, 0);
 				if (ret < 0)
 				{
 					//return -1;
@@ -206,7 +205,10 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 				}
 				else
 				{
-					std::cout << "buffer = " << buffer << std::endl;
+					std::cout << "buffer = " << buffer << "strlen(buffer)"<< strlen(buffer) <<std::endl;
+					DealBroadCast(buffer);
+					memset(buffer, '\0', sizeof(buffer));
+
 				}
 				
 			}
@@ -234,34 +236,11 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 				m_pSelectClient->m_VecClientFd.push_back(iSock_client);
 			}
 		
-
 		}
 
 
 	}
 	return true;
-}
-/*--------------------------------------------------------------------
-** 名称 : th_BroadCast
-**--------------------------------------------------------------------
-** 功能 : 处理广播
-**--------------------------------------------------------------------
-** 参数 : NULL
-** 返值 : NULL
-**--------------------------------------------------------------------
-** Date:		Name
-** 19.02.18		任伟
-**-------------------------------------------------------------------*/
-bool SelectClient::th_BroadCast()
-{
-	
-	while(true)
-	{
-		int iSock_Client = QuerySockClient();
-		DealBroadCast(iSock_Client);
-
-
-	}
 }
 
 /*--------------------------------------------------------------------
@@ -275,46 +254,23 @@ bool SelectClient::th_BroadCast()
 ** Date:		Name
 ** 19.02.10		任伟
 **-------------------------------------------------------------------*/
-void SelectClient::DealBroadCast(int sock_client) // 设计成类似群聊
+void SelectClient::DealBroadCast(char*  bufferSend) // 设计成类似群聊
 {
-	char buffer[256];//如果是1024 那么会分批发送4次
-	memset(buffer, 0, sizeof(buffer));
-	
-	WSABUF DataBuf;
-	DataBuf.len = 256;
-	DataBuf.buf = buffer;
-
-	DWORD RecvBytes, Flags;
-	Flags = 0;
-	WSAOVERLAPPED RecvOverlapped;
-	SecureZeroMemory((PVOID)& RecvOverlapped, sizeof(WSAOVERLAPPED));
-
-	// Create an event handle and setup an overlapped structure.
-	RecvOverlapped.hEvent = WSACreateEvent();
- 	if(NULL == RecvOverlapped.hEvent)
- 	{
- 		closesocket(sock_client);
-		return;
- 	}
-	int ret = WSARecv(sock_client, &DataBuf, 1, &RecvBytes, &Flags, &RecvOverlapped, NULL);
-	if(ret < 0)
+	if(0 == strlen(bufferSend))
 	{
-		//perror("recv error!\n");
-				
-		//WSACleanup();
 		return;
 	}
-	else if(ret > 0)
-	{
-		std::cout << "buffer = " << buffer << std::endl;
-		VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
-		for (itClientFd; itClientFd != m_pSelectClient->m_VecClientFd.end(); itClientFd++)
-		{
-			int iClientFd = *itClientFd;
-			send(iClientFd, buffer, sizeof(buffer), 0);
-		}
-	}
 
+	VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
+	for (itClientFd; itClientFd != m_pSelectClient->m_VecClientFd.end(); itClientFd++)
+	{
+		int iClientFd = *itClientFd;
+		send(iClientFd, bufferSend, strlen(bufferSend), 0);
+
+		std::cout << "BroadCast size =  "<< strlen(bufferSend) <<"Info = " << bufferSend<<std::endl;
+
+	}
+	memset(bufferSend, '\0', sizeof(bufferSend));
 }
 /*--------------------------------------------------------------------
 ** 名称 : QuerySockClient

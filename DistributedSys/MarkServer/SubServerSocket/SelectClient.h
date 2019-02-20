@@ -37,10 +37,7 @@ private:
 	static bool th_DealClientConnect(int iServerfd);
 
 	// 处理广播
-	static bool th_BroadCast();
-
-	// 处理广播
-	static void DealBroadCast(int sock_client);
+	static void DealBroadCast(char*  bufferSend);
 
 	// 获取新增客户端套接字
 	static int QuerySockClient();
@@ -54,8 +51,6 @@ private:
 	VecClientFd m_VecClientFd; // 已经连接上的客户端套接字描述符
 
 	std::thread *m_thSelectClient; // 轮询客户端请求线程
-
-	std::thread* m_thBroadCast; // 广播线程
 
 	int m_iSock_client;// 客户端连接
 

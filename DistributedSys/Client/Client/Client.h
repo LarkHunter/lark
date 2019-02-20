@@ -12,6 +12,19 @@ struct STNetAddress
 	int iPort;
 	int iSocket;
 };
+
+// 邮件结构体
+struct STMailInfo
+{
+	//bool bSpecial;
+	const char* strTitle; // 邮件标题
+	const char* strContent; // 邮件内容
+// 	STMailInfo()
+// 	{
+// 		//bSpecial = false;
+// 	}
+
+};
 /*---------------------------------------------------------------------------
 ** 类名 : Client
 **---------------------------------------------------------------------------
@@ -56,5 +69,8 @@ private:
 	std::thread* th_BroadCast; //广播
 
 	int m_iSubServerSocket; // 服务器套接字
+
+	static STMailInfo m_MailInfo;
+	static STNetAddress m_stNetAddr;
 };
 

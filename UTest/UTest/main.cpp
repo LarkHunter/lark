@@ -15,21 +15,40 @@ void SubThread(int iCount)
 {
 	std::cout << "iCount = "<< iCount << std::endl;
 }
+void Processed(char* ch)
+{
+	std::cout << "ch = "<<ch << std::endl;
+	memset(ch, '\0', sizeof(ch));
+	if(0 == strlen(ch))
+	{
+		std::cout << "ch is empty " << ch << std::endl;
+
+	}
+}
 int main()
 {
-	while(1)
-	{
-		char ch[100];
-		gets_s(ch);
 
-		std::cout << "ch == "  << ch << std::endl;
+ 	while(1)
+ 	{
+ 		char ch[100] = "Bingo";
+		Processed(ch);
+		//memset(ch, '\0', sizeof(ch));
+		//std::cout << "ch == " << ch << "sizeof(ch) = " << sizeof(ch) << std::endl;
+//  		gets_s(ch);
+//  
+//  		std::cout << "ch == "  << ch << std::endl;
+// 		std::cout << "------ " << std::endl;
+// 	
+// 		memset(ch, '\0', sizeof(ch));
+// 		std::cout << "ch == " << ch <<"sizeof(ch) = " << sizeof(ch) <<std::endl;
 
-		int a = 9;
-		if(a>0)
-		{
-			break;
-		}
-	}
+
+ 		int a = 9;
+ 		if(a>0)
+ 		{
+ 			break;
+ 		}
+ 	}
 	
 
 

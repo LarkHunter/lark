@@ -3,6 +3,10 @@
 #define D_BROADCAST_SEND 64
 
 Client* Client::m_pClient = NULL;
+
+STMailInfo Client::m_MailInfo = {"",""};
+STNetAddress Client::m_stNetAddr = { "",0,0 };
+
 /*--------------------------------------------------------------------
 ** Ãû³Æ : Client
 **--------------------------------------------------------------------
@@ -100,7 +104,7 @@ bool Client::StartNetService()
 			std::cout << "  recvbuf= " << recvbuf << std::endl;
 			printf("recvbuf = %s\n", recvbuf);
 
-			m_iSubServerSocket = LinkFunctionServer("127.0.0.1",9999);
+			m_iSubServerSocket = LinkFunctionServer("127.0.0.1",6666);
 
 			if(m_iSubServerSocket > 0)
 			{
@@ -234,10 +238,12 @@ int Client::LinkFunctionServer(const char* pszIP, int iPort)
 	{
 		std::cout << "ConnectFunctionServer Success " << iResult << std::endl;
 
-		char buffer[256];
+		char buffer[256] = "OK I Came";
 		//strcmp(buffer, "OK I Came");
-		sprintf(buffer, "OK I Came");
+		//sprintf(buffer, "OK I Came");
 		send(iListenSocket, buffer, strlen(buffer), 0);
+		std::cout <<"send buffer" << buffer << "strlen(buffer)"<< strlen(buffer) << std::endl;
+		memset(buffer, '\0', sizeof(buffer));
 	}
 
 	return iListenSocket;
@@ -255,12 +261,13 @@ int Client::LinkFunctionServer(const char* pszIP, int iPort)
 **-------------------------------------------------------------------*/
 void Client::BroadCast(int iServerFd)
 {
+	char recvbuf[DEFAULT_BUFLEN];
+	int recvbuflen = DEFAULT_BUFLEN;
+
 	while(1)
 	{
-		char recvbuf[DEFAULT_BUFLEN];
-		int recvbuflen = DEFAULT_BUFLEN;
-
-		int iResult = recv(iServerFd, recvbuf, recvbuflen, 0);
+		memset(recvbuf, '\0', sizeof(recvbuf));
+		int iResult = recv(iServerFd, recvbuf, 1024, 0);
 		if(iResult > 0)
 		{
 			std::cout << "Reveived BroadCast "<< recvbuf << std::endl;
@@ -269,6 +276,7 @@ void Client::BroadCast(int iServerFd)
 		{
 			std::cout << "Connection Closed!" << std::endl;
 		}
+		memset(recvbuf, '\0', sizeof(recvbuf));
 // 		else
 // 		{
 // 			std::cout << "Received Error" << WSAGetLastError() << std::endl;
