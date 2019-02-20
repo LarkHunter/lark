@@ -180,7 +180,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 			//perror("select error!\n");
 			
 			int i = WSAGetLastError();
-			//Sleep(5000);
+			
 			break;
 			
 		}
@@ -218,7 +218,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 			struct sockaddr_in client_addr;
 			size_t size = sizeof(struct sockaddr_in);
 
-			int iSock_client = accept(iServerfd, NULL, NULL);
+			int iSock_client = accept(iServerfd, (struct sockaddr*)(&client_addr), (int*)(&size));
 			if(iSock_client < 0)
 			{
 				perror("accept error!\n");

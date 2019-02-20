@@ -165,7 +165,7 @@ void Client::SendBroadCast()
 		gets_s(chSend);
 		int iServerSocket = QueryServerSocket();
 
-		//send(iServerSocket, chSend, sizeof(chSend), 0);
+		send(iServerSocket, chSend, sizeof(chSend), 0);
 	}
 	
 }
@@ -234,8 +234,10 @@ int Client::LinkFunctionServer(const char* pszIP, int iPort)
 	{
 		std::cout << "ConnectFunctionServer Success " << iResult << std::endl;
 
-		const char* pszBuffer = "Hello Users";
-		send(iListenSocket, pszBuffer, strlen(pszBuffer), 0);
+		char buffer[256];
+		//strcmp(buffer, "OK I Came");
+		sprintf(buffer, "OK I Came");
+		send(iListenSocket, buffer, strlen(buffer), 0);
 	}
 
 	return iListenSocket;
