@@ -277,7 +277,7 @@ void SelectClient::OnCustomChat(char*  bufferSend) // 设计成类似群聊
 	{
 		case CLIENT_SUSTOM_MSG_PLAYER_LIST: // 玩家列表
 			{
-				
+				OnSubCustomPlayerList(bufferSend);
 			}
 			break;
 		case CLIENT_SUSTOM_MSG_SINGLE_CHAT : // 单聊
@@ -300,22 +300,32 @@ void SelectClient::OnCustomChat(char*  bufferSend) // 设计成类似群聊
 	}
 	
 }
-
 /*--------------------------------------------------------------------
-** 名称 : OnSubCustomGroupChat
+** 名称 : OnSubCustomPlayerList
 **--------------------------------------------------------------------
 ** 功能 : 群聊
 **--------------------------------------------------------------------
-** 参数 : iSubMsg 客户端子消息
-** 参数 : pszRecvChat 聊天内容
+** 参数 : bufferSend 客户端内容
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
 ** 19.02.10		Mark
 **-------------------------------------------------------------------*/
-void OnSubCustomList()
+void SelectClient::OnSubCustomPlayerList(char*  bufferSend)
 {
+	char pszRecvChat[256];
+	memset(pszRecvChat, '\0', sizeof(pszRecvChat));
 
+	MapClientFd::iterator itClientFd = m_pSelectClient->m_MapClientFd.begin();
+	for (itClientFd; itClientFd != m_pSelectClient->m_MapClientFd.end(); itClientFd++)
+	{
+		int iClientRank = itClientFd->first;
+		int iClientFd = itClientFd->second;
+
+		send(iClientFd, pszRecvChat, strlen(pszRecvChat), 0);
+	}
+
+	memset(pszRecvChat, '\0', sizeof(pszRecvChat));
 }
 
 /*--------------------------------------------------------------------
@@ -340,7 +350,9 @@ void SelectClient::OnSubCustomGroupChat(int iSubMsg, char* pszRecvChat)
 	MapClientFd::iterator itClientFd = m_pSelectClient-> m_MapClientFd.begin();
 	for(itClientFd;itClientFd!= m_pSelectClient->m_MapClientFd.end();itClientFd++)
 	{
-		int iClientFd = itClientFd->first;
+	//	int iClientRank = itClientFd->first;
+		int iClientFd = itClientFd->second;
+
 		send(iClientFd, pszRecvChat, strlen(pszRecvChat), 0);
 	}
 

@@ -43,7 +43,7 @@ private:
 	static void OnCustomChat(char*  bufferSend);
 
 	// 客户端子消息:发送玩家列表
-	static void OnSubCustomList();
+	static void OnSubCustomPlayerList(char*  bufferSend);
 
 	// 群聊
 	static void OnSubCustomGroupChat(int iSubMsg,char* pszRecvChat);
