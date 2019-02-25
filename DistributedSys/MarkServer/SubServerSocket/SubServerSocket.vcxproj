@@ -148,6 +148,7 @@
     <ClCompile Include="ConnectLoginServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Define\ClientCustomDefine.h" />
     <ClInclude Include="SelectClient.h" />
     <ClInclude Include="ConnectLoginServer.h" />
   </ItemGroup>
