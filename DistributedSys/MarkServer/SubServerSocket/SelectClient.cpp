@@ -10,7 +10,7 @@ SelectClient * SelectClient::m_pSelectClient = NULL;
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
 SelectClient::SelectClient()
 {
@@ -26,7 +26,7 @@ SelectClient::SelectClient()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
 SelectClient::~SelectClient()
 {
@@ -43,7 +43,7 @@ SelectClient::~SelectClient()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
 bool SelectClient::InitNetService()
 {
@@ -63,7 +63,7 @@ bool SelectClient::InitNetService()
 ** 返值 : serverfd
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
 int SelectClient::InitSocket()
 {
@@ -132,7 +132,7 @@ int SelectClient::InitSocket()
 ** 返值 : serverfd
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
 bool SelectClient::th_DealClientConnect(int iServerfd)
 {
@@ -206,7 +206,7 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 				else
 				{
 					std::cout << "buffer = " << buffer << "strlen(buffer)"<< strlen(buffer) <<std::endl;
-					DealBroadCast(buffer);
+					OnCustomChat(buffer);
 					memset(buffer, '\0', sizeof(buffer));
 
 				}
@@ -230,10 +230,14 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 			// 把连接加入到新的文件描述符集合中
 			if(conn_amount < 5)
 			{
+				int iConnRank = conn_amount;
+				int iClientFd = iSock_client;
+
 				client_sockfd[conn_amount++] = iSock_client;
 				
 				std::cout << "sock_client " << iSock_client << "Accept" << std::endl;
-				m_pSelectClient->m_VecClientFd.push_back(iSock_client);
+
+				m_pSelectClient->m_MapClientFd.insert(std::make_pair(iConnRank, iClientFd));
 			}
 		
 		}
@@ -244,34 +248,117 @@ bool SelectClient::th_DealClientConnect(int iServerfd)
 }
 
 /*--------------------------------------------------------------------
-** 名称 : DealBroadCast
+** 名称 : OnCustomChat
 **--------------------------------------------------------------------
-** 功能 : 处理广播
+** 功能 : 处理客户端聊天消息
 **--------------------------------------------------------------------
 ** 参数 : sock_client 客户端连接
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.10		任伟
+** 19.02.10		Mark
 **-------------------------------------------------------------------*/
-void SelectClient::DealBroadCast(char*  bufferSend) // 设计成类似群聊
+void SelectClient::OnCustomChat(char*  bufferSend) // 设计成类似群聊
 {
 	if(0 == strlen(bufferSend))
 	{
 		return;
 	}
 
-	VecClientFd::iterator itClientFd = m_pSelectClient->m_VecClientFd.begin();
-	for (itClientFd; itClientFd != m_pSelectClient->m_VecClientFd.end(); itClientFd++)
+	int iSubMsg;
+	char szTxt[256];
+	memset(szTxt, '\0', sizeof(szTxt));
+	int iMsg = ReadClientMsg(bufferSend, iSubMsg,szTxt);
+	if(0 == iMsg)
 	{
-		int iClientFd = *itClientFd;
-		send(iClientFd, bufferSend, strlen(bufferSend), 0);
+		return;
+	}
+	switch(iMsg)
+	{
+		case CLIENT_SUSTOM_MSG_PLAYER_LIST: // 玩家列表
+			{
+				OnSubCustomPlayerList(bufferSend);
+			}
+			break;
+		case CLIENT_SUSTOM_MSG_SINGLE_CHAT : // 单聊
+			{
 
-		std::cout << "BroadCast size =  "<< strlen(bufferSend) <<"Info = " << bufferSend<<std::endl;
+			}
+			break;
+		case CLIENT_SUSTOM_MSG_MAKE_GROUP: // 建立讨论组
+			{
+			}
+			break;
+		case CLIENT_SUSTOM_MSG_GROUP_CHAT:// 群聊
+			{
+				OnSubCustomGroupChat(iSubMsg, szTxt);
+			}
+			break;
+		default:
+			break;
 
 	}
-	memset(bufferSend, '\0', sizeof(bufferSend));
+	
 }
+/*--------------------------------------------------------------------
+** 名称 : OnSubCustomPlayerList
+**--------------------------------------------------------------------
+** 功能 : 群聊
+**--------------------------------------------------------------------
+** 参数 : bufferSend 客户端内容
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.10		Mark
+**-------------------------------------------------------------------*/
+void SelectClient::OnSubCustomPlayerList(char*  bufferSend)
+{
+	char pszRecvChat[256];
+	memset(pszRecvChat, '\0', sizeof(pszRecvChat));
+
+	MapClientFd::iterator itClientFd = m_pSelectClient->m_MapClientFd.begin();
+	for (itClientFd; itClientFd != m_pSelectClient->m_MapClientFd.end(); itClientFd++)
+	{
+		int iClientRank = itClientFd->first;
+		int iClientFd = itClientFd->second;
+
+		send(iClientFd, pszRecvChat, strlen(pszRecvChat), 0);
+	}
+
+	memset(pszRecvChat, '\0', sizeof(pszRecvChat));
+}
+
+/*--------------------------------------------------------------------
+** 名称 : OnSubCustomGroupChat
+**--------------------------------------------------------------------
+** 功能 : 群聊
+**--------------------------------------------------------------------
+** 参数 : iSubMsg 客户端子消息
+** 参数 : pszRecvChat 聊天内容
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.10		Mark
+**-------------------------------------------------------------------*/
+void SelectClient::OnSubCustomGroupChat(int iSubMsg, char* pszRecvChat)
+{
+	if(0 == strlen(pszRecvChat))
+	{
+		return;
+	}
+
+	MapClientFd::iterator itClientFd = m_pSelectClient-> m_MapClientFd.begin();
+	for(itClientFd;itClientFd!= m_pSelectClient->m_MapClientFd.end();itClientFd++)
+	{
+	//	int iClientRank = itClientFd->first;
+		int iClientFd = itClientFd->second;
+
+		send(iClientFd, pszRecvChat, strlen(pszRecvChat), 0);
+	}
+
+	memset(pszRecvChat, '\0', sizeof(pszRecvChat));
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : QuerySockClient
 **--------------------------------------------------------------------
@@ -281,7 +368,7 @@ void SelectClient::DealBroadCast(char*  bufferSend) // 设计成类似群聊
 ** 返值 : 新增客户端套接字
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.18	任伟
+** 19.02.18		Mark
 **-------------------------------------------------------------------*/
 int SelectClient::QuerySockClient()
 {
@@ -298,7 +385,7 @@ int SelectClient::QuerySockClient()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.02.18	任伟
+** 19.02.18	    Mark
 **-------------------------------------------------------------------*/
 void SelectClient::SetSocketClient(int iSock_client)
 {
@@ -307,4 +394,23 @@ void SelectClient::SetSocketClient(int iSock_client)
 		m_pSelectClient->m_iSock_client = iSock_client;
 	}
 	
+}
+/*--------------------------------------------------------------------
+** 名称 : ReadClientMsg
+**--------------------------------------------------------------------
+** 功能 : 读取客户端消息
+**--------------------------------------------------------------------
+** 参数 : bufferSend 客户端消息
+** 参数 : iSubMsg 客户端子消息
+** 参数 : szTxt 文本内容
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.02.25	    Mark
+**-------------------------------------------------------------------*/
+int SelectClient::ReadClientMsg(char* bufferSend, int &iSubMsg, char* szTxt)
+{
+	int iMsg = atoi(bufferSend);
+
+	return iMsg;
 }

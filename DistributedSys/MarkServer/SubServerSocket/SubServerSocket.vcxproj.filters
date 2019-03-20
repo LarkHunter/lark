@@ -16,6 +16,9 @@
     <ClInclude Include="SelectClient.h">
       <Filter>SelectClient</Filter>
     </ClInclude>
+    <ClInclude Include="Define\ClientCustomDefine.h">
+      <Filter>Define</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ConnectLoginServer">
@@ -23,6 +26,9 @@
     </Filter>
     <Filter Include="SelectClient">
       <UniqueIdentifier>{3bb083fa-e2b3-424e-b6cf-57e0c1a9bc60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Define">
+      <UniqueIdentifier>{dae26aa5-b985-4e1d-ac4e-a73b0f809273}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
