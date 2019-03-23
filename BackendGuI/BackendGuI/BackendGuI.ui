@@ -14,38 +14,38 @@
    <string>BackendGuI</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="accountBtn">
+   <widget class="QPushButton" name="confirmBtn">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>250</y>
+      <x>300</x>
+      <y>300</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>账号</string>
+     <string>确定</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pwdBtn">
+   <widget class="QPushButton" name="resetBtn">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>290</y>
+      <x>400</x>
+      <y>300</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>密码</string>
+     <string>重置</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>250</y>
-      <width>101</width>
+      <x>330</x>
+      <y>220</y>
+      <width>141</width>
       <height>20</height>
      </rect>
     </property>
@@ -53,14 +53,14 @@
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>290</y>
-      <width>101</width>
+      <x>330</x>
+      <y>250</y>
+      <width>141</width>
       <height>20</height>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -110,6 +110,32 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>216</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>账号</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>245</y>
+      <width>31</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>密码</string>
+    </property>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

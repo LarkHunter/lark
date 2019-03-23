@@ -5,11 +5,11 @@ BackendGuI::BackendGuI(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	ui.accountBtn->setStyleSheet("color:red");
+	ui.confirmBtn->setStyleSheet("color:red");
 
 	yearPlanButton->setGeometry(10, 10, 200, 200);
 
-	connect(ui.accountBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
+	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
 }
 /*--------------------------------------------------------------------

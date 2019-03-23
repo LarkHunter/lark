@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -30,15 +31,17 @@ class Ui_BackendGuIClass
 {
 public:
     QWidget *centralWidget;
-    QPushButton *accountBtn;
-    QPushButton *pwdBtn;
+    QPushButton *confirmBtn;
+    QPushButton *resetBtn;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QPushButton *yearPlanButton;
     QPushButton *seasonPlanBtn;
     QPushButton *Btn;
+    QLabel *label;
+    QLabel *label_2;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
@@ -51,44 +54,50 @@ public:
         BackendGuIClass->resize(600, 400);
         centralWidget = new QWidget(BackendGuIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        accountBtn = new QPushButton(centralWidget);
-        accountBtn->setObjectName(QStringLiteral("accountBtn"));
-        accountBtn->setGeometry(QRect(350, 250, 75, 23));
-        pwdBtn = new QPushButton(centralWidget);
-        pwdBtn->setObjectName(QStringLiteral("pwdBtn"));
-        pwdBtn->setGeometry(QRect(350, 290, 75, 23));
+        confirmBtn = new QPushButton(centralWidget);
+        confirmBtn->setObjectName(QStringLiteral("confirmBtn"));
+        confirmBtn->setGeometry(QRect(300, 300, 75, 23));
+        resetBtn = new QPushButton(centralWidget);
+        resetBtn->setObjectName(QStringLiteral("resetBtn"));
+        resetBtn->setGeometry(QRect(400, 300, 75, 23));
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(450, 250, 101, 20));
+        lineEdit->setGeometry(QRect(330, 220, 141, 20));
         lineEdit_2 = new QLineEdit(centralWidget);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(450, 290, 101, 20));
-        widget = new QWidget(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(40, 35, 133, 167));
-        verticalLayout = new QVBoxLayout(widget);
+        lineEdit_2->setGeometry(QRect(330, 250, 141, 20));
+        layoutWidget = new QWidget(centralWidget);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(40, 35, 133, 167));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        yearPlanButton = new QPushButton(widget);
+        yearPlanButton = new QPushButton(layoutWidget);
         yearPlanButton->setObjectName(QStringLiteral("yearPlanButton"));
         yearPlanButton->setMinimumSize(QSize(131, 51));
 
         verticalLayout->addWidget(yearPlanButton);
 
-        seasonPlanBtn = new QPushButton(widget);
+        seasonPlanBtn = new QPushButton(layoutWidget);
         seasonPlanBtn->setObjectName(QStringLiteral("seasonPlanBtn"));
         seasonPlanBtn->setMinimumSize(QSize(131, 51));
 
         verticalLayout->addWidget(seasonPlanBtn);
 
-        Btn = new QPushButton(widget);
+        Btn = new QPushButton(layoutWidget);
         Btn->setObjectName(QStringLiteral("Btn"));
         Btn->setMinimumSize(QSize(131, 51));
 
         verticalLayout->addWidget(Btn);
 
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(290, 216, 41, 20));
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(290, 245, 31, 21));
         BackendGuIClass->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(BackendGuIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -113,11 +122,13 @@ public:
     void retranslateUi(QMainWindow *BackendGuIClass)
     {
         BackendGuIClass->setWindowTitle(QApplication::translate("BackendGuIClass", "BackendGuI", Q_NULLPTR));
-        accountBtn->setText(QApplication::translate("BackendGuIClass", "\350\264\246\345\217\267", Q_NULLPTR));
-        pwdBtn->setText(QApplication::translate("BackendGuIClass", "\345\257\206\347\240\201", Q_NULLPTR));
+        confirmBtn->setText(QApplication::translate("BackendGuIClass", "\347\241\256\345\256\232", Q_NULLPTR));
+        resetBtn->setText(QApplication::translate("BackendGuIClass", "\351\207\215\347\275\256", Q_NULLPTR));
         yearPlanButton->setText(QApplication::translate("BackendGuIClass", "\345\271\264\345\272\246\350\256\241\345\210\222", Q_NULLPTR));
         seasonPlanBtn->setText(QApplication::translate("BackendGuIClass", "\345\255\243\350\212\202\350\256\241\345\210\222", Q_NULLPTR));
         Btn->setText(QApplication::translate("BackendGuIClass", "\346\234\210\350\256\241\345\210\222", Q_NULLPTR));
+        label->setText(QApplication::translate("BackendGuIClass", "\350\264\246\345\217\267", Q_NULLPTR));
+        label_2->setText(QApplication::translate("BackendGuIClass", "\345\257\206\347\240\201", Q_NULLPTR));
         menu->setTitle(QApplication::translate("BackendGuIClass", "\346\265\267\350\236\272\345\271\264\345\272\246\350\256\241\345\210\222\347\256\241\347\220\206\347\263\273\347\273\237 ", Q_NULLPTR));
     } // retranslateUi
 
