@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QTimer>
 #include "ui_BackendGuI.h"
+#include "YearPlanDialog.h"
 
 class BackendGuI : public QMainWindow
 {
@@ -21,6 +22,7 @@ public:
 public:
 	//QPushButton *yearPlanButton = new QPushButton;
 	QTimer *m_cTimer;
+	YearPlanDialog yearPlanDialog;
 private:
 	int m_nClickTimes;
 

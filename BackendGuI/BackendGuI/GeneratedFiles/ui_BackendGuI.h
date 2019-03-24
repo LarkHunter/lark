@@ -131,7 +131,7 @@ public:
         monthPlanBtn->setText(QApplication::translate("BackendGuIClass", "\346\234\210\350\256\241\345\210\222", Q_NULLPTR));
         label->setText(QApplication::translate("BackendGuIClass", "\350\264\246\345\217\267", Q_NULLPTR));
         label_2->setText(QApplication::translate("BackendGuIClass", "\345\257\206\347\240\201", Q_NULLPTR));
-        menu->setTitle(QApplication::translate("BackendGuIClass", "\347\245\236\345\245\207\346\265\267\350\236\272\345\271\264\345\272\246\350\256\241\345\210\222\347\256\241\347\220\206\347\263\273\347\273\237 ", Q_NULLPTR));
+        menu->setTitle(QApplication::translate("BackendGuIClass", "\347\245\236\345\245\207\346\265\267\350\236\272\345\271\264\345\272\246\350\256\241\345\210\222\347\256\241\347\220\206\345\231\250 ", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -55,6 +55,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BackendGuI.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="yearplandialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_yearplandialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_yearplandialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="BackendGuI.ui">
@@ -70,10 +79,25 @@
     <ClInclude Include="GeneratedFiles\ui_BackendGuI.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_yearplandialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="BackendGuI.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="yearplandialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="yearplandialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BackendGuI.rc" />
   </ItemGroup>
 </Project>

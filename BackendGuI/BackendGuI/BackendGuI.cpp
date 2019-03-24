@@ -54,6 +54,7 @@ void BackendGuI::onAccountBtnclicked()
 void BackendGuI::onYearPlanBtnclicked()
 {
 	qDebug() << "onYearPlanBtnclicked" << endl;
+	yearPlanDialog.show();
 }
 
 /*--------------------------------------------------------------------
