@@ -37,9 +37,9 @@ public:
     QLineEdit *lineEdit_2;
     QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
-    QPushButton *yearPlanButton;
+    QPushButton *yearPlanBtn;
     QPushButton *seasonPlanBtn;
-    QPushButton *Btn;
+    QPushButton *monthPlanBtn;
     QLabel *label;
     QLabel *label_2;
     QToolBar *mainToolBar;
@@ -52,6 +52,8 @@ public:
         if (BackendGuIClass->objectName().isEmpty())
             BackendGuIClass->setObjectName(QStringLiteral("BackendGuIClass"));
         BackendGuIClass->resize(600, 400);
+        BackendGuIClass->setMinimumSize(QSize(600, 400));
+        BackendGuIClass->setMaximumSize(QSize(600, 400));
         centralWidget = new QWidget(BackendGuIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         confirmBtn = new QPushButton(centralWidget);
@@ -74,11 +76,11 @@ public:
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        yearPlanButton = new QPushButton(layoutWidget);
-        yearPlanButton->setObjectName(QStringLiteral("yearPlanButton"));
-        yearPlanButton->setMinimumSize(QSize(131, 51));
+        yearPlanBtn = new QPushButton(layoutWidget);
+        yearPlanBtn->setObjectName(QStringLiteral("yearPlanBtn"));
+        yearPlanBtn->setMinimumSize(QSize(131, 51));
 
-        verticalLayout->addWidget(yearPlanButton);
+        verticalLayout->addWidget(yearPlanBtn);
 
         seasonPlanBtn = new QPushButton(layoutWidget);
         seasonPlanBtn->setObjectName(QStringLiteral("seasonPlanBtn"));
@@ -86,11 +88,11 @@ public:
 
         verticalLayout->addWidget(seasonPlanBtn);
 
-        Btn = new QPushButton(layoutWidget);
-        Btn->setObjectName(QStringLiteral("Btn"));
-        Btn->setMinimumSize(QSize(131, 51));
+        monthPlanBtn = new QPushButton(layoutWidget);
+        monthPlanBtn->setObjectName(QStringLiteral("monthPlanBtn"));
+        monthPlanBtn->setMinimumSize(QSize(131, 51));
 
-        verticalLayout->addWidget(Btn);
+        verticalLayout->addWidget(monthPlanBtn);
 
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
@@ -124,12 +126,12 @@ public:
         BackendGuIClass->setWindowTitle(QApplication::translate("BackendGuIClass", "BackendGuI", Q_NULLPTR));
         confirmBtn->setText(QApplication::translate("BackendGuIClass", "\347\241\256\345\256\232", Q_NULLPTR));
         resetBtn->setText(QApplication::translate("BackendGuIClass", "\351\207\215\347\275\256", Q_NULLPTR));
-        yearPlanButton->setText(QApplication::translate("BackendGuIClass", "\345\271\264\345\272\246\350\256\241\345\210\222", Q_NULLPTR));
+        yearPlanBtn->setText(QApplication::translate("BackendGuIClass", "\345\271\264\345\272\246\350\256\241\345\210\222", Q_NULLPTR));
         seasonPlanBtn->setText(QApplication::translate("BackendGuIClass", "\345\255\243\350\212\202\350\256\241\345\210\222", Q_NULLPTR));
-        Btn->setText(QApplication::translate("BackendGuIClass", "\346\234\210\350\256\241\345\210\222", Q_NULLPTR));
+        monthPlanBtn->setText(QApplication::translate("BackendGuIClass", "\346\234\210\350\256\241\345\210\222", Q_NULLPTR));
         label->setText(QApplication::translate("BackendGuIClass", "\350\264\246\345\217\267", Q_NULLPTR));
         label_2->setText(QApplication::translate("BackendGuIClass", "\345\257\206\347\240\201", Q_NULLPTR));
-        menu->setTitle(QApplication::translate("BackendGuIClass", "\346\265\267\350\236\272\345\271\264\345\272\246\350\256\241\345\210\222\347\256\241\347\220\206\347\263\273\347\273\237 ", Q_NULLPTR));
+        menu->setTitle(QApplication::translate("BackendGuIClass", "\347\245\236\345\245\207\346\265\267\350\236\272\345\271\264\345\272\246\350\256\241\345\210\222\347\256\241\347\220\206\347\263\273\347\273\237 ", Q_NULLPTR));
     } // retranslateUi
 
 };

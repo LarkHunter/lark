@@ -10,6 +10,18 @@
     <height>400</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>400</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>BackendGuI</string>
   </property>
@@ -71,7 +83,7 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="yearPlanButton">
+      <widget class="QPushButton" name="yearPlanBtn">
        <property name="minimumSize">
         <size>
          <width>131</width>
@@ -97,7 +109,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="Btn">
+      <widget class="QPushButton" name="monthPlanBtn">
        <property name="minimumSize">
         <size>
          <width>131</width>
@@ -158,7 +170,7 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>海螺年度计划管理系统 </string>
+     <string>神奇海螺年度计划管理器 </string>
     </property>
    </widget>
    <addaction name="menu"/>
