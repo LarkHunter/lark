@@ -52,7 +52,7 @@
      <string>重置</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="accountEdit">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -62,7 +62,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="pwdEdit">
     <property name="geometry">
      <rect>
       <x>330</x>

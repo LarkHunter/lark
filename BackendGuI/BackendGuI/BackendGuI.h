@@ -15,6 +15,7 @@ public:
 	
 	public slots:
 	void onAccountBtnclicked();
+	void onResetBtnClicked(); // 重置
 	void onYearPlanBtnclicked(); // 年度计划
 
 	void onTimeOut();

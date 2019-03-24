@@ -1,5 +1,7 @@
 #include "BackendGuI.h"
 #include <QDebug>
+#include <QMessageBox>
+
 BackendGuI::BackendGuI(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -17,9 +19,10 @@ BackendGuI::BackendGuI(QWidget *parent)
 	m_cTimer = new QTimer(this);
 
 	connect(ui.yearPlanBtn, SIGNAL(clicked()), this, SLOT(onYearPlanBtnclicked()));
+	connect(ui.resetBtn, SIGNAL(clicked()),this,SLOT(onResetBtnClicked()));
 	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
-	connect(m_cTimer, SIGNAL(timeout()),this,SLOT(onTimeOut()));
+	//connect(m_cTimer, SIGNAL(timeout()),this,SLOT(onTimeOut()));
 }
 /*--------------------------------------------------------------------
 ** 名称 : onAccountBtnclicked
@@ -35,11 +38,32 @@ BackendGuI::BackendGuI(QWidget *parent)
 void BackendGuI::onAccountBtnclicked()
 {
 	qDebug() << "CWinButton::clicked" << endl;
-	m_nClickTimes++;
-	m_cTimer->start(200);
+	int iAccount = ui.accountEdit->text().toInt();
+	int iPwd = ui.pwdEdit->text().toInt();
+	if(1996 != iAccount ||
+		1112 != iPwd)
+	{
+		ui.accountEdit->clear();
+		ui.pwdEdit->clear();
 
-	//qDebug() << "..";
+		QString QsTitle = QString::fromLocal8Bit("警告！");
+		QString QsContent = QString::fromLocal8Bit("不是本人登录，软件会崩溃！！");
+		QMessageBox::about(NULL, QsTitle, QsContent);
+	}
+	ui.accountEdit->clear();
+	ui.accountEdit->clear();
+	//m_nClickTimes++;
+	//m_cTimer->start(200);
+
+	qDebug() << "..";
 }
+
+void BackendGuI::onResetBtnClicked()
+{
+	ui.accountEdit->clear();
+	ui.pwdEdit->clear();
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : onYearPlanBtnclicked
 **--------------------------------------------------------------------
