@@ -22,6 +22,8 @@ BackendGuI::BackendGuI(QWidget *parent)
 	connect(ui.resetBtn, SIGNAL(clicked()),this,SLOT(onResetBtnClicked()));
 	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
+	ui.yearPlanBtn->setEnabled(false);
+
 	//connect(m_cTimer, SIGNAL(timeout()),this,SLOT(onTimeOut()));
 }
 /*--------------------------------------------------------------------
@@ -49,12 +51,14 @@ void BackendGuI::onAccountBtnclicked()
 		QString QsTitle = QString::fromLocal8Bit("警告！");
 		QString QsContent = QString::fromLocal8Bit("不是本人登录，软件会崩溃！！");
 		QMessageBox::about(NULL, QsTitle, QsContent);
+
 	}
 	ui.accountEdit->clear();
 	ui.accountEdit->clear();
 	//m_nClickTimes++;
 	//m_cTimer->start(200);
 
+	ui.yearPlanBtn->setEnabled(true);
 	qDebug() << "..";
 }
 
