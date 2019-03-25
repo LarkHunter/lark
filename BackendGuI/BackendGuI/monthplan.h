@@ -51,11 +51,16 @@ public:
 	// 十二月
 	void onDecBtnclicked();
 
+	// 新增
+	void onAddBtnclicked();
+
 public:
 	bool LoadResource(const char* pszPlancfg); // 加载资源
 
 	bool InitListWidget(QString& qstrInfo); // 初始化planlist
 
+	// 取得当前文件
+	const char* QuerySeasonPlanFile();
 private:
 	Ui::monthPlan ui;
 

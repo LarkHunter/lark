@@ -262,6 +262,7 @@
     <QtRcc Include="BackendGuI.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Define\monthPlanDefine.h" />
     <ClInclude Include="Define\seasonPlanDefine.h" />
     <ClInclude Include="GeneratedFiles\ui_BackendGuI.h" />
     <ClInclude Include="GeneratedFiles\ui_loginwarn.h" />

@@ -136,6 +136,9 @@
     <ClInclude Include="GeneratedFiles\ui_monthplan.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Define\monthPlanDefine.h">
+      <Filter>Define</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="BackendGuI.h">
