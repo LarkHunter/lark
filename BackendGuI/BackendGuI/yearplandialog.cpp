@@ -82,8 +82,6 @@ bool YearPlanDialog::InitListWidget(QString& qstrInfo)
 		return false;
 	}
 
-	QString qsNum = qstrInfo.section(":",1,0);
-	QString qsInfo = qstrInfo.section(":",1,1);
 	ui.listWidget->insertItem(0, qstrInfo);
 
 	return true;

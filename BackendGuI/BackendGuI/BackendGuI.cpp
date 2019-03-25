@@ -23,7 +23,9 @@ BackendGuI::BackendGuI(QWidget *parent)
 	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
 	ui.yearPlanBtn->setEnabled(false);
-
+	ui.seasonPlanBtn->setEnabled(false);
+	ui.monthPlanBtn->setEnabled(false);
+	m_nErrorCount = 3;
 	//connect(m_cTimer, SIGNAL(timeout()),this,SLOT(onTimeOut()));
 }
 /*--------------------------------------------------------------------
@@ -39,6 +41,14 @@ BackendGuI::BackendGuI(QWidget *parent)
 **-------------------------------------------------------------------*/
 void BackendGuI::onAccountBtnclicked()
 {
+	m_nErrorCount--;
+	if(m_nErrorCount <=0)
+	{
+		this->hide();
+		m_loginWarn.show();
+		return;
+	}
+
 	qDebug() << "CWinButton::clicked" << endl;
 	int iAccount = ui.accountEdit->text().toInt();
 	int iPwd = ui.pwdEdit->text().toInt();
@@ -47,18 +57,34 @@ void BackendGuI::onAccountBtnclicked()
 	{
 		ui.accountEdit->clear();
 		ui.pwdEdit->clear();
-
 		QString QsTitle = QString::fromLocal8Bit("警告！");
-		QString QsContent = QString::fromLocal8Bit("不是本人登录，软件会崩溃！！");
+
+		QString QsContent = QString::fromLocal8Bit("您还有【");
+		QString qstrCount = QString::number(m_nErrorCount);
+		QString QsChance = QString::fromLocal8Bit("】次机会尝试\n");
+		QString qsWarnContent = QString::fromLocal8Bit("不是本人登录，软件会崩溃！！");
+		QsContent.append(qstrCount);
+		QsContent.append(QsChance);
+		QsContent.append(qsWarnContent);
+		
 		QMessageBox::about(NULL, QsTitle, QsContent);
 
+		//m_loginWarn.close();
 	}
+	else
+	{
+		ui.yearPlanBtn->setEnabled(true);
+		ui.seasonPlanBtn->setEnabled(true);
+		ui.monthPlanBtn->setEnabled(true);
+	}
+
 	ui.accountEdit->clear();
 	ui.accountEdit->clear();
 	//m_nClickTimes++;
 	//m_cTimer->start(200);
 
-	ui.yearPlanBtn->setEnabled(true);
+	
+
 	qDebug() << "..";
 }
 

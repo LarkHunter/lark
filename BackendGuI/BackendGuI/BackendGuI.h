@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "ui_BackendGuI.h"
 #include "YearPlanDialog.h"
+#include "loginwarn.h"
 
 class BackendGuI : public QMainWindow
 {
@@ -24,9 +25,11 @@ public:
 	//QPushButton *yearPlanButton = new QPushButton;
 	QTimer *m_cTimer;
 	YearPlanDialog yearPlanDialog;
+	loginWarn m_loginWarn;
 private:
 	int m_nClickTimes;
 
+	int m_nErrorCount; // 密码可以重新输入的次数 
 private:
 	Ui::BackendGuIClass ui;
 };
