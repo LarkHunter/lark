@@ -19,6 +19,7 @@ BackendGuI::BackendGuI(QWidget *parent)
 	m_cTimer = new QTimer(this);
 
 	connect(ui.yearPlanBtn, SIGNAL(clicked()), this, SLOT(onYearPlanBtnclicked()));
+	connect(ui.seasonPlanBtn, SIGNAL(clicked()), this, SLOT(onSeasonPlanBtnclicked()));
 	connect(ui.resetBtn, SIGNAL(clicked()),this,SLOT(onResetBtnClicked()));
 	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
@@ -37,7 +38,7 @@ BackendGuI::BackendGuI(QWidget *parent)
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 18.06.28		Mark
+** 19.03.24		Mark
 **-------------------------------------------------------------------*/
 void BackendGuI::onAccountBtnclicked()
 {
@@ -80,7 +81,7 @@ void BackendGuI::onAccountBtnclicked()
 	}
 
 	ui.accountEdit->clear();
-	ui.accountEdit->clear();
+	ui.pwdEdit->clear();
 	//m_nClickTimes++;
 	//m_cTimer->start(200);
 
@@ -104,12 +105,27 @@ void BackendGuI::onResetBtnClicked()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 18.06.28		Mark
+** 19.03.24		Mark
 **-------------------------------------------------------------------*/
 void BackendGuI::onYearPlanBtnclicked()
 {
 	qDebug() << "onYearPlanBtnclicked" << endl;
 	yearPlanDialog.show();
+}
+/*--------------------------------------------------------------------
+** 名称 : onSeasonPlanBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.03.25		Mark
+**-------------------------------------------------------------------*/
+void BackendGuI::onSeasonPlanBtnclicked()
+{
+	m_seasonPlanDiglog.show();
 }
 
 /*--------------------------------------------------------------------
@@ -121,7 +137,7 @@ void BackendGuI::onYearPlanBtnclicked()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 18.06.28		Mark
+** 19.03.24		Mark
 **-------------------------------------------------------------------*/
 void BackendGuI::onTimeOut()
 {

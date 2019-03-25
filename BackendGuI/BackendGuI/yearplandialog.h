@@ -19,6 +19,7 @@ public:
 	bool LoadResource(); // 加载资源
 
 	bool InitListWidget(QString& qstrInfo); // 初始化planlist
+
 	public slots:
 
 	// 新增计划

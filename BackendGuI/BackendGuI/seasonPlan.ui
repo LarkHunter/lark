@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>seasonPlan</class>
+ <widget class="QWidget" name="seasonPlan">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>630</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>630</width>
+    <height>411</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>630</width>
+    <height>411</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>seasonPlan</string>
+  </property>
+  <widget class="QPushButton" name="springBtn">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>50</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>春天</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="summerBtn">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>50</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>夏天</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="autumnBtn">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>90</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>秋天</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="winterBtn">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>90</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>冬天</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="seasonlistWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>421</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="numEdit">
+   <property name="geometry">
+    <rect>
+     <x>22</x>
+     <y>350</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="planLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>152</x>
+     <y>350</y>
+     <width>271</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addBtn">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>350</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>新增</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

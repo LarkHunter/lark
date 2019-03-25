@@ -6,7 +6,7 @@
 #include "ui_BackendGuI.h"
 #include "YearPlanDialog.h"
 #include "loginwarn.h"
-
+#include "seasonPlan.h"
 class BackendGuI : public QMainWindow
 {
 	Q_OBJECT
@@ -18,6 +18,7 @@ public:
 	void onAccountBtnclicked();
 	void onResetBtnClicked(); // 重置
 	void onYearPlanBtnclicked(); // 年度计划
+	void onSeasonPlanBtnclicked(); // 季度计划
 
 	void onTimeOut();
 
@@ -26,6 +27,7 @@ public:
 	QTimer *m_cTimer;
 	YearPlanDialog yearPlanDialog;
 	loginWarn m_loginWarn;
+	seasonPlan m_seasonPlanDiglog;
 private:
 	int m_nClickTimes;
 
