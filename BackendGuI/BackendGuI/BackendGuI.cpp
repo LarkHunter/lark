@@ -42,19 +42,20 @@ BackendGuI::BackendGuI(QWidget *parent)
 void BackendGuI::onAccountBtnclicked()
 {
 	m_nErrorCount--;
-	if(m_nErrorCount <=0)
-	{
-		this->hide();
-		m_loginWarn.show();
-		return;
-	}
-
+	
 	qDebug() << "CWinButton::clicked" << endl;
 	int iAccount = ui.accountEdit->text().toInt();
 	int iPwd = ui.pwdEdit->text().toInt();
 	if(1996 != iAccount ||
 		1112 != iPwd)
 	{
+		if(m_nErrorCount <= 0)
+		{
+			this->hide();
+			m_loginWarn.show();
+			return;
+		}
+
 		ui.accountEdit->clear();
 		ui.pwdEdit->clear();
 		QString QsTitle = QString::fromLocal8Bit("¾¯¸æ£¡");
