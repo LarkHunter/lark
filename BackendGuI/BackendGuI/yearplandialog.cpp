@@ -37,7 +37,7 @@ bool YearPlanDialog::LoadResource()
 // 	QTextStream outStream(&fileout);
 // 
 // 	QString line = outStream.readLine();
-	QFile file("plan.txt");
+	QFile file("yearPlan.txt");
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		return false;
@@ -125,7 +125,7 @@ void YearPlanDialog::onAddPlanBtnclicked()
 
 	m_iSetItem.insert(inumber); // ±£´æµ±Ç°ÐòºÅ
 
-	QFile fileout("plan.txt");
+	QFile fileout("yearPlan.txt");
 
 	if(!fileout.open(QIODevice::Append | QIODevice::Text))
 	{
