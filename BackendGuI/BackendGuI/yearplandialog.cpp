@@ -10,7 +10,11 @@ YearPlanDialog::YearPlanDialog(QWidget *parent)
 	this->setWindowIcon(QIcon("wheet.png"));
 
 	connect(ui.addButton,SIGNAL(clicked()),this,SLOT(onAddPlanBtnclicked()));
+
 	ui.listWidget->setSortingEnabled(true); // 自动排序
+
+	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺年计划 "));
+	this->setWindowIcon(QIcon("wheet.png"));
 
 	LoadResource();
 }

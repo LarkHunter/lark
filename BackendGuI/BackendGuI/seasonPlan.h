@@ -34,6 +34,9 @@ public slots:
 
 	// 新增
 	void onAddBtnclicked();
+
+	// 取得当前文件
+	const char* QuerySeasonPlanFile();
 public:
 	std::set<int> m_iSetItem;
 private:

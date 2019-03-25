@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'BackendGuI.h'
+** Meta object code from reading C++ file 'seasonPlan.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../BackendGuI.h"
+#include "../../seasonPlan.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'BackendGuI.h' doesn't include <QObject>."
+#error "The header file 'seasonPlan.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.7.1. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -18,35 +18,36 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_BackendGuI_t {
-    QByteArrayData data[8];
-    char stringdata0[126];
+struct qt_meta_stringdata_seasonPlan_t {
+    QByteArrayData data[9];
+    char stringdata0[136];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_BackendGuI_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_seasonPlan_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_BackendGuI_t qt_meta_stringdata_BackendGuI = {
+static const qt_meta_stringdata_seasonPlan_t qt_meta_stringdata_seasonPlan = {
     {
-QT_MOC_LITERAL(0, 0, 10), // "BackendGuI"
-QT_MOC_LITERAL(1, 11, 19), // "onAccountBtnclicked"
-QT_MOC_LITERAL(2, 31, 0), // ""
-QT_MOC_LITERAL(3, 32, 17), // "onResetBtnClicked"
-QT_MOC_LITERAL(4, 50, 20), // "onYearPlanBtnclicked"
-QT_MOC_LITERAL(5, 71, 22), // "onSeasonPlanBtnclicked"
-QT_MOC_LITERAL(6, 94, 21), // "onMonthPlanBtnclicked"
-QT_MOC_LITERAL(7, 116, 9) // "onTimeOut"
+QT_MOC_LITERAL(0, 0, 10), // "seasonPlan"
+QT_MOC_LITERAL(1, 11, 18), // "onSpringBtnclicked"
+QT_MOC_LITERAL(2, 30, 0), // ""
+QT_MOC_LITERAL(3, 31, 18), // "onSummerBtnclicked"
+QT_MOC_LITERAL(4, 50, 18), // "onAutumnBtnclicked"
+QT_MOC_LITERAL(5, 69, 18), // "onWinterBtnclicked"
+QT_MOC_LITERAL(6, 88, 15), // "onAddBtnclicked"
+QT_MOC_LITERAL(7, 104, 19), // "QuerySeasonPlanFile"
+QT_MOC_LITERAL(8, 124, 11) // "const char*"
 
     },
-    "BackendGuI\0onAccountBtnclicked\0\0"
-    "onResetBtnClicked\0onYearPlanBtnclicked\0"
-    "onSeasonPlanBtnclicked\0onMonthPlanBtnclicked\0"
-    "onTimeOut"
+    "seasonPlan\0onSpringBtnclicked\0\0"
+    "onSummerBtnclicked\0onAutumnBtnclicked\0"
+    "onWinterBtnclicked\0onAddBtnclicked\0"
+    "QuerySeasonPlanFile\0const char*"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_BackendGuI[] = {
+static const uint qt_meta_data_seasonPlan[] = {
 
  // content:
        7,       // revision
@@ -73,51 +74,51 @@ static const uint qt_meta_data_BackendGuI[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
+    0x80000000 | 8,
 
        0        // eod
 };
 
-void BackendGuI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void seasonPlan::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        BackendGuI *_t = static_cast<BackendGuI *>(_o);
+        seasonPlan *_t = static_cast<seasonPlan *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->onAccountBtnclicked(); break;
-        case 1: _t->onResetBtnClicked(); break;
-        case 2: _t->onYearPlanBtnclicked(); break;
-        case 3: _t->onSeasonPlanBtnclicked(); break;
-        case 4: _t->onMonthPlanBtnclicked(); break;
-        case 5: _t->onTimeOut(); break;
+        case 0: _t->onSpringBtnclicked(); break;
+        case 1: _t->onSummerBtnclicked(); break;
+        case 2: _t->onAutumnBtnclicked(); break;
+        case 3: _t->onWinterBtnclicked(); break;
+        case 4: _t->onAddBtnclicked(); break;
+        case 5: { const char* _r = _t->QuerySeasonPlanFile();
+            if (_a[0]) *reinterpret_cast< const char**>(_a[0]) = _r; }  break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
-const QMetaObject BackendGuI::staticMetaObject = {
-    { &QMainWindow::staticMetaObject, qt_meta_stringdata_BackendGuI.data,
-      qt_meta_data_BackendGuI,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+const QMetaObject seasonPlan::staticMetaObject = {
+    { &QWidget::staticMetaObject, qt_meta_stringdata_seasonPlan.data,
+      qt_meta_data_seasonPlan,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
-const QMetaObject *BackendGuI::metaObject() const
+const QMetaObject *seasonPlan::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *BackendGuI::qt_metacast(const char *_clname)
+void *seasonPlan::qt_metacast(const char *_clname)
 {
     if (!_clname) return Q_NULLPTR;
-    if (!strcmp(_clname, qt_meta_stringdata_BackendGuI.stringdata0))
-        return static_cast<void*>(const_cast< BackendGuI*>(this));
-    return QMainWindow::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_seasonPlan.stringdata0))
+        return static_cast<void*>(const_cast< seasonPlan*>(this));
+    return QWidget::qt_metacast(_clname);
 }
 
-int BackendGuI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int seasonPlan::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {

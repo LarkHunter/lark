@@ -20,6 +20,9 @@ BackendGuI::BackendGuI(QWidget *parent)
 
 	connect(ui.yearPlanBtn, SIGNAL(clicked()), this, SLOT(onYearPlanBtnclicked()));
 	connect(ui.seasonPlanBtn, SIGNAL(clicked()), this, SLOT(onSeasonPlanBtnclicked()));
+	connect(ui.seasonPlanBtn, SIGNAL(clicked()), this, SLOT(onSeasonPlanBtnclicked()));
+	connect(ui.monthPlanBtn, SIGNAL(clicked()), this, SLOT(onMonthPlanBtnclicked()));
+
 	connect(ui.resetBtn, SIGNAL(clicked()),this,SLOT(onResetBtnClicked()));
 	connect(ui.confirmBtn, SIGNAL(clicked()), this, SLOT(onAccountBtnclicked()));
 
@@ -126,6 +129,21 @@ void BackendGuI::onYearPlanBtnclicked()
 void BackendGuI::onSeasonPlanBtnclicked()
 {
 	m_seasonPlanDiglog.show();
+}
+/*--------------------------------------------------------------------
+** 名称 : onSeasonPlanBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.03.25		Mark
+**-------------------------------------------------------------------*/
+void BackendGuI::onMonthPlanBtnclicked()
+{
+	m_monthPlanDialog.show();
 }
 
 /*--------------------------------------------------------------------

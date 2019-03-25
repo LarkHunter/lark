@@ -3,20 +3,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QDebug>
-
-#define D_SEASON_SPRING_PLAN_CONFIG "springPlan.txt"
-#define D_SEASON_SUMMER_PLAN_CONFIG "summerPlan.txt"
-#define D_SEASON_AUTUMN_PLAN_CONFIG "autumnPlan.txt"
-#define D_SEASON_WINTER_PLAN_CONFIG "winterPlan.txt"
-
-//
-enum E_SEASON_TYPE
-{
-	E_SEASON_TYPE_SPRING = 1,
-	E_SEASON_TYPE_SUMMER = 2,
-	E_SEASON_TYPE_AUTUMN = 3,
-	E_SEASON_TYPE_WINTER = 4,
-};
+#include "Define/seasonPlanDefine.h"
 
 //autumnPlan winterPlan
 seasonPlan::seasonPlan(QWidget *parent)
@@ -30,6 +17,9 @@ seasonPlan::seasonPlan(QWidget *parent)
 	connect(ui.winterBtn, SIGNAL(clicked()), this, SLOT(onWinterBtnclicked()));
 
 	connect(ui.addBtn, SIGNAL(clicked()), this, SLOT(onAddBtnclicked()));
+
+	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺季度计划 "));
+	this->setWindowIcon(QIcon("wheet.png"));
 
 	//connect(ui.add); //onAddBtnclicked addBtn
 	ui.seasonlistWidget->setSortingEnabled(true); // 自动排序
@@ -65,6 +55,7 @@ bool seasonPlan::LoadResource(const char* pszPlancfg)
 	}
 
 	ui.seasonlistWidget->clear();
+	m_iSetItem.clear();
 
 	QTextStream in(&file);
 	in.setCodec("UTF-8");
@@ -104,22 +95,31 @@ bool seasonPlan::InitListWidget(QString& qstrInfo)
 void seasonPlan::onSpringBtnclicked()
 {
 	LoadResource(D_SEASON_SPRING_PLAN_CONFIG);
+
+	m_iSeason = E_SEASON_TYPE_SPRING;
 }
 
 void seasonPlan::onSummerBtnclicked()
 {
 	LoadResource(D_SEASON_SUMMER_PLAN_CONFIG);
+
+	m_iSeason = E_SEASON_TYPE_SUMMER;
 }
 
 void seasonPlan::onAutumnBtnclicked()
-{
-	
+{	
 	LoadResource(D_SEASON_AUTUMN_PLAN_CONFIG);
+
+	m_iSeason = E_SEASON_TYPE_AUTUMN;
+
 }
 
 void seasonPlan::onWinterBtnclicked()
 {
 	LoadResource(D_SEASON_WINTER_PLAN_CONFIG);
+
+	m_iSeason = E_SEASON_TYPE_WINTER;
+
 }
 
 void seasonPlan::onAddBtnclicked()
@@ -148,7 +148,13 @@ void seasonPlan::onAddBtnclicked()
 
 	m_iSetItem.insert(inumber); // 保存当前序号
 
-	QFile fileout("yearPlan.txt");
+	const char* pszFile = QuerySeasonPlanFile();
+	if(!pszFile)
+	{
+		return;
+	}
+
+	QFile fileout(pszFile);
 
 	if (!fileout.open(QIODevice::Append | QIODevice::Text))
 	{
@@ -164,4 +170,41 @@ void seasonPlan::onAddBtnclicked()
 
 	ui.numEdit->clear();
 	ui.planLineEdit->clear();
+}
+
+const char* seasonPlan::QuerySeasonPlanFile()
+{
+	const char* pszFile = D_SEASON_SPRING_PLAN_CONFIG;
+	switch (m_iSeason)
+	{
+		case E_SEASON_TYPE_SPRING:
+			{
+				pszFile = D_SEASON_SPRING_PLAN_CONFIG;
+			}
+			break;
+		case E_SEASON_TYPE_SUMMER:
+			{
+				pszFile = D_SEASON_SUMMER_PLAN_CONFIG;
+			}
+			break;
+		case E_SEASON_TYPE_AUTUMN:
+			{
+				pszFile = D_SEASON_AUTUMN_PLAN_CONFIG;
+			}
+			break;
+		case E_SEASON_TYPE_WINTER:
+			{
+				pszFile = D_SEASON_WINTER_PLAN_CONFIG;
+			}
+			break;
+
+	default:
+		break;
+	}
+
+	if(!pszFile)
+	{
+		return "";
+	}
+	return pszFile;
 }
