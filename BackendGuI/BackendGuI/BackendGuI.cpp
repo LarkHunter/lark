@@ -51,7 +51,7 @@ void BackendGuI::onAccountBtnclicked()
 	qDebug() << "CWinButton::clicked" << endl;
 	int iAccount = ui.accountEdit->text().toInt();
 	int iPwd = ui.pwdEdit->text().toInt();
-	if(1996 != iAccount ||
+	if(1995 != iAccount ||
 		1112 != iPwd)
 	{
 		if(m_nErrorCount <= 0)
