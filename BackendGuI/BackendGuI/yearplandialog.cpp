@@ -71,7 +71,12 @@ bool YearPlanDialog::LoadResource()
 **-------------------------------------------------------------------*/
 bool YearPlanDialog::InitListWidget(QString& qstrInfo)
 {
+	if(qstrInfo.isEmpty())
+	{
+		return false;
+	}
 	QStringList list = qstrInfo.split(":");
+
 	QString qstrNumber = list[0]; 
 	QString qstrText = list[1]; 
 

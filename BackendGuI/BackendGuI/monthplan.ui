@@ -35,194 +35,138 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="JanBtn">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>430</x>
      <y>50</y>
-     <width>75</width>
-     <height>23</height>
+     <width>77</width>
+     <height>170</height>
     </rect>
    </property>
-   <property name="text">
-    <string>一月</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="JanBtn">
+      <property name="text">
+       <string>一月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="MarBtn">
+      <property name="text">
+       <string>三月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="MayBtn">
+      <property name="text">
+       <string>五月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="JulBtn">
+      <property name="text">
+       <string>七月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="SepBtn">
+      <property name="text">
+       <string>九月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="NovBtn">
+      <property name="text">
+       <string>十一月</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QPushButton" name="MayBtn">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>130</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>五月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="JulBtn">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>170</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>七月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="NovBtn">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>250</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>十一月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="SepBtn">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>210</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>九月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="MarBtn">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>90</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>三月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="FebBtn">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>530</x>
      <y>50</y>
-     <width>75</width>
-     <height>23</height>
+     <width>77</width>
+     <height>170</height>
     </rect>
    </property>
-   <property name="text">
-    <string>二月</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QPushButton" name="FebBtn">
+      <property name="text">
+       <string>二月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="AprBtn">
+      <property name="text">
+       <string>四月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="JunBtn">
+      <property name="text">
+       <string>六月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="AugBtn">
+      <property name="text">
+       <string>八月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="OctBtn">
+      <property name="text">
+       <string>十月</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="DecBtn">
+      <property name="text">
+       <string>十二月</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QPushButton" name="JunBtn">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>130</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>六月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="AprBtn">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>90</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>四月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="AugBtn">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>170</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>八月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="OctBtn">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>210</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>十月</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="DecBtn">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>250</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>十二月</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="planLineEdit">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>400</y>
-     <width>271</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="numEdit">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>50</x>
      <y>400</y>
-     <width>101</width>
-     <height>20</height>
+     <width>355</width>
+     <height>25</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QPushButton" name="addBtn">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>400</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>新增</string>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLineEdit" name="numEdit"/>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="planLineEdit"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="addBtn">
+      <property name="text">
+       <string>新增</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

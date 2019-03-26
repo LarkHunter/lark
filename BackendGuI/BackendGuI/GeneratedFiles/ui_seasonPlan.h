@@ -63,7 +63,7 @@ public:
         planLineEdit->setGeometry(QRect(152, 350, 271, 20));
         addBtn = new QPushButton(seasonPlan);
         addBtn->setObjectName(QStringLiteral("addBtn"));
-        addBtn->setGeometry(QRect(480, 350, 75, 23));
+        addBtn->setGeometry(QRect(450, 350, 75, 23));
 
         retranslateUi(seasonPlan);
 

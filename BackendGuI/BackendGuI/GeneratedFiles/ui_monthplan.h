@@ -13,10 +13,12 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -25,20 +27,26 @@ class Ui_monthPlan
 {
 public:
     QListWidget *monthListWidget;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
     QPushButton *JanBtn;
+    QPushButton *MarBtn;
     QPushButton *MayBtn;
     QPushButton *JulBtn;
-    QPushButton *NovBtn;
     QPushButton *SepBtn;
-    QPushButton *MarBtn;
+    QPushButton *NovBtn;
+    QWidget *widget1;
+    QVBoxLayout *verticalLayout_2;
     QPushButton *FebBtn;
-    QPushButton *JunBtn;
     QPushButton *AprBtn;
+    QPushButton *JunBtn;
     QPushButton *AugBtn;
     QPushButton *OctBtn;
     QPushButton *DecBtn;
-    QLineEdit *planLineEdit;
+    QWidget *widget2;
+    QHBoxLayout *horizontalLayout;
     QLineEdit *numEdit;
+    QLineEdit *planLineEdit;
     QPushButton *addBtn;
 
     void setupUi(QWidget *monthPlan)
@@ -51,51 +59,105 @@ public:
         monthListWidget = new QListWidget(monthPlan);
         monthListWidget->setObjectName(QStringLiteral("monthListWidget"));
         monthListWidget->setGeometry(QRect(40, 30, 351, 271));
-        JanBtn = new QPushButton(monthPlan);
+        widget = new QWidget(monthPlan);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(430, 50, 77, 170));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        JanBtn = new QPushButton(widget);
         JanBtn->setObjectName(QStringLiteral("JanBtn"));
-        JanBtn->setGeometry(QRect(430, 50, 75, 23));
-        MayBtn = new QPushButton(monthPlan);
-        MayBtn->setObjectName(QStringLiteral("MayBtn"));
-        MayBtn->setGeometry(QRect(430, 130, 75, 23));
-        JulBtn = new QPushButton(monthPlan);
-        JulBtn->setObjectName(QStringLiteral("JulBtn"));
-        JulBtn->setGeometry(QRect(430, 170, 75, 23));
-        NovBtn = new QPushButton(monthPlan);
-        NovBtn->setObjectName(QStringLiteral("NovBtn"));
-        NovBtn->setGeometry(QRect(430, 250, 75, 23));
-        SepBtn = new QPushButton(monthPlan);
-        SepBtn->setObjectName(QStringLiteral("SepBtn"));
-        SepBtn->setGeometry(QRect(430, 210, 75, 23));
-        MarBtn = new QPushButton(monthPlan);
+
+        verticalLayout->addWidget(JanBtn);
+
+        MarBtn = new QPushButton(widget);
         MarBtn->setObjectName(QStringLiteral("MarBtn"));
-        MarBtn->setGeometry(QRect(430, 90, 75, 23));
-        FebBtn = new QPushButton(monthPlan);
+
+        verticalLayout->addWidget(MarBtn);
+
+        MayBtn = new QPushButton(widget);
+        MayBtn->setObjectName(QStringLiteral("MayBtn"));
+
+        verticalLayout->addWidget(MayBtn);
+
+        JulBtn = new QPushButton(widget);
+        JulBtn->setObjectName(QStringLiteral("JulBtn"));
+
+        verticalLayout->addWidget(JulBtn);
+
+        SepBtn = new QPushButton(widget);
+        SepBtn->setObjectName(QStringLiteral("SepBtn"));
+
+        verticalLayout->addWidget(SepBtn);
+
+        NovBtn = new QPushButton(widget);
+        NovBtn->setObjectName(QStringLiteral("NovBtn"));
+
+        verticalLayout->addWidget(NovBtn);
+
+        widget1 = new QWidget(monthPlan);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(530, 50, 77, 170));
+        verticalLayout_2 = new QVBoxLayout(widget1);
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        FebBtn = new QPushButton(widget1);
         FebBtn->setObjectName(QStringLiteral("FebBtn"));
-        FebBtn->setGeometry(QRect(530, 50, 75, 23));
-        JunBtn = new QPushButton(monthPlan);
-        JunBtn->setObjectName(QStringLiteral("JunBtn"));
-        JunBtn->setGeometry(QRect(530, 130, 75, 23));
-        AprBtn = new QPushButton(monthPlan);
+
+        verticalLayout_2->addWidget(FebBtn);
+
+        AprBtn = new QPushButton(widget1);
         AprBtn->setObjectName(QStringLiteral("AprBtn"));
-        AprBtn->setGeometry(QRect(530, 90, 75, 23));
-        AugBtn = new QPushButton(monthPlan);
+
+        verticalLayout_2->addWidget(AprBtn);
+
+        JunBtn = new QPushButton(widget1);
+        JunBtn->setObjectName(QStringLiteral("JunBtn"));
+
+        verticalLayout_2->addWidget(JunBtn);
+
+        AugBtn = new QPushButton(widget1);
         AugBtn->setObjectName(QStringLiteral("AugBtn"));
-        AugBtn->setGeometry(QRect(530, 170, 75, 23));
-        OctBtn = new QPushButton(monthPlan);
+
+        verticalLayout_2->addWidget(AugBtn);
+
+        OctBtn = new QPushButton(widget1);
         OctBtn->setObjectName(QStringLiteral("OctBtn"));
-        OctBtn->setGeometry(QRect(530, 210, 75, 23));
-        DecBtn = new QPushButton(monthPlan);
+
+        verticalLayout_2->addWidget(OctBtn);
+
+        DecBtn = new QPushButton(widget1);
         DecBtn->setObjectName(QStringLiteral("DecBtn"));
-        DecBtn->setGeometry(QRect(530, 250, 75, 23));
-        planLineEdit = new QLineEdit(monthPlan);
-        planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
-        planLineEdit->setGeometry(QRect(180, 400, 271, 20));
-        numEdit = new QLineEdit(monthPlan);
+
+        verticalLayout_2->addWidget(DecBtn);
+
+        widget2 = new QWidget(monthPlan);
+        widget2->setObjectName(QStringLiteral("widget2"));
+        widget2->setGeometry(QRect(50, 400, 355, 25));
+        horizontalLayout = new QHBoxLayout(widget2);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        numEdit = new QLineEdit(widget2);
         numEdit->setObjectName(QStringLiteral("numEdit"));
-        numEdit->setGeometry(QRect(50, 400, 101, 20));
-        addBtn = new QPushButton(monthPlan);
+
+        horizontalLayout->addWidget(numEdit);
+
+        planLineEdit = new QLineEdit(widget2);
+        planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
+
+        horizontalLayout->addWidget(planLineEdit);
+
+        addBtn = new QPushButton(widget2);
         addBtn->setObjectName(QStringLiteral("addBtn"));
-        addBtn->setGeometry(QRect(480, 400, 75, 23));
+
+        horizontalLayout->addWidget(addBtn);
+
 
         retranslateUi(monthPlan);
 
@@ -106,14 +168,14 @@ public:
     {
         monthPlan->setWindowTitle(QApplication::translate("monthPlan", "monthPlan", Q_NULLPTR));
         JanBtn->setText(QApplication::translate("monthPlan", "\344\270\200\346\234\210", Q_NULLPTR));
+        MarBtn->setText(QApplication::translate("monthPlan", "\344\270\211\346\234\210", Q_NULLPTR));
         MayBtn->setText(QApplication::translate("monthPlan", "\344\272\224\346\234\210", Q_NULLPTR));
         JulBtn->setText(QApplication::translate("monthPlan", "\344\270\203\346\234\210", Q_NULLPTR));
-        NovBtn->setText(QApplication::translate("monthPlan", "\345\215\201\344\270\200\346\234\210", Q_NULLPTR));
         SepBtn->setText(QApplication::translate("monthPlan", "\344\271\235\346\234\210", Q_NULLPTR));
-        MarBtn->setText(QApplication::translate("monthPlan", "\344\270\211\346\234\210", Q_NULLPTR));
+        NovBtn->setText(QApplication::translate("monthPlan", "\345\215\201\344\270\200\346\234\210", Q_NULLPTR));
         FebBtn->setText(QApplication::translate("monthPlan", "\344\272\214\346\234\210", Q_NULLPTR));
-        JunBtn->setText(QApplication::translate("monthPlan", "\345\205\255\346\234\210", Q_NULLPTR));
         AprBtn->setText(QApplication::translate("monthPlan", "\345\233\233\346\234\210", Q_NULLPTR));
+        JunBtn->setText(QApplication::translate("monthPlan", "\345\205\255\346\234\210", Q_NULLPTR));
         AugBtn->setText(QApplication::translate("monthPlan", "\345\205\253\346\234\210", Q_NULLPTR));
         OctBtn->setText(QApplication::translate("monthPlan", "\345\215\201\346\234\210", Q_NULLPTR));
         DecBtn->setText(QApplication::translate("monthPlan", "\345\215\201\344\272\214\346\234\210", Q_NULLPTR));

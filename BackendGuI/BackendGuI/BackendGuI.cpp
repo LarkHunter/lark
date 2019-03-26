@@ -29,6 +29,7 @@ BackendGuI::BackendGuI(QWidget *parent)
 	ui.yearPlanBtn->setEnabled(false);
 	ui.seasonPlanBtn->setEnabled(false);
 	ui.monthPlanBtn->setEnabled(false);
+
 	m_nErrorCount = 3;
 	//connect(m_cTimer, SIGNAL(timeout()),this,SLOT(onTimeOut()));
 }

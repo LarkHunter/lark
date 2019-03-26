@@ -34,6 +34,7 @@ monthPlan::monthPlan(QWidget *parent)
 	ui.monthListWidget->setSortingEnabled(true); // ×Ô¶¯ÅÅÐò
 
 	m_iMonth = E_MONTH_TYPE_JAN;
+
 }
 
 monthPlan::~monthPlan()
@@ -221,7 +222,13 @@ bool monthPlan::LoadResource(const char* pszPlancfg)
 
 bool monthPlan::InitListWidget(QString& qstrInfo)
 {
+	if (qstrInfo.isEmpty())
+	{
+		return false;
+	}
+
 	QStringList list = qstrInfo.split(":");
+	
 	QString qstrNumber = list[0];
 	QString qstrText = list[1];
 

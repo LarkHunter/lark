@@ -71,8 +71,17 @@ bool seasonPlan::LoadResource(const char* pszPlancfg)
 
 bool seasonPlan::InitListWidget(QString& qstrInfo)
 {
-	
+	if(qstrInfo.isEmpty())
+	{
+		return false;
+	}
+
 	QStringList list = qstrInfo.split(":");
+	if(list.empty())
+	{
+		return false;
+	}
+
 	QString qstrNumber = list[0];
 	QString qstrText = list[1];
 

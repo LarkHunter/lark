@@ -28,20 +28,32 @@
   <widget class="QLineEdit" name="planLineEdit">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>480</y>
-     <width>291</width>
-     <height>31</height>
+     <x>192</x>
+     <y>501</y>
+     <width>361</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>361</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>361</width>
+     <height>20</height>
+    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>610</x>
-     <y>480</y>
-     <width>121</width>
-     <height>31</height>
+     <x>590</x>
+     <y>500</y>
+     <width>75</width>
+     <height>23</height>
     </rect>
    </property>
    <property name="text">
@@ -51,10 +63,10 @@
   <widget class="QLineEdit" name="numEdit">
    <property name="geometry">
     <rect>
-     <x>192</x>
-     <y>480</y>
+     <x>81</x>
+     <y>501</y>
      <width>81</width>
-     <height>31</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

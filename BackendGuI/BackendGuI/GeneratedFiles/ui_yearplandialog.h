@@ -38,13 +38,15 @@ public:
         YearPlanDialog->setMaximumSize(QSize(757, 581));
         planLineEdit = new QLineEdit(YearPlanDialog);
         planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
-        planLineEdit->setGeometry(QRect(290, 480, 291, 31));
+        planLineEdit->setGeometry(QRect(192, 501, 361, 20));
+        planLineEdit->setMinimumSize(QSize(361, 20));
+        planLineEdit->setMaximumSize(QSize(361, 20));
         addButton = new QPushButton(YearPlanDialog);
         addButton->setObjectName(QStringLiteral("addButton"));
-        addButton->setGeometry(QRect(610, 480, 121, 31));
+        addButton->setGeometry(QRect(590, 500, 75, 23));
         numEdit = new QLineEdit(YearPlanDialog);
         numEdit->setObjectName(QStringLiteral("numEdit"));
-        numEdit->setGeometry(QRect(192, 480, 81, 31));
+        numEdit->setGeometry(QRect(81, 501, 81, 20));
         listWidget = new QListWidget(YearPlanDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
         listWidget->setGeometry(QRect(80, 40, 631, 321));
