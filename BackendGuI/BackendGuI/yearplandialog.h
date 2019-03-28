@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_yearplandialog.h"
 #include <QFile>
+#include <QTimer>
 
 #include<set>
 
@@ -25,11 +26,19 @@ public:
 	// 新增计划
 	void onAddPlanBtnclicked();
 
+	// 点击计划
+	void onPlanWidgetBtnclicked();
 public:
 	std::set<int> m_iSetItem;
 
+	QTimer *m_cTimer;
+
 private:
 	Ui::YearPlanDialog ui;
+
+private:
+	int m_nClickTimes;
+
 };
 
 #endif // YEARPLANDIALOG_H

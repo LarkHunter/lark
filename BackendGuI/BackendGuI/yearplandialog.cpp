@@ -11,10 +11,15 @@ YearPlanDialog::YearPlanDialog(QWidget *parent)
 
 	connect(ui.addButton,SIGNAL(clicked()),this,SLOT(onAddPlanBtnclicked()));
 
+	connect(ui.listWidget,SIGNAL(clicked()),this,SLOT(onPlanWidgetBtnclicked()));
 	ui.listWidget->setSortingEnabled(true); // 自动排序
 
 	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺年计划 "));
 	this->setWindowIcon(QIcon("wheet.png"));
+
+	m_nClickTimes = 0;
+
+	m_cTimer = new QTimer(this);
 
 	LoadResource();
 }
@@ -156,4 +161,11 @@ void YearPlanDialog::onAddPlanBtnclicked()
 
 	ui.numEdit->clear();
 	ui.planLineEdit->clear();
+}
+
+void YearPlanDialog::onPlanWidgetBtnclicked()
+{
+	m_nClickTimes += 1;
+
+	m_cTimer->start(200);
 }
