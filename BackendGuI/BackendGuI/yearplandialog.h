@@ -28,6 +28,9 @@ public:
 
 	// 点击计划
 	void onPlanWidgetBtnclicked();
+
+	// 超时
+	void onTimeOut();
 public:
 	std::set<int> m_iSetItem;
 

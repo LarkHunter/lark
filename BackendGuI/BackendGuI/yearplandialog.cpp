@@ -6,20 +6,23 @@ YearPlanDialog::YearPlanDialog(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	m_cTimer = new QTimer(this);
+
 	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺 "));
 	this->setWindowIcon(QIcon("wheet.png"));
 
 	connect(ui.addButton,SIGNAL(clicked()),this,SLOT(onAddPlanBtnclicked()));
 
-	connect(ui.listWidget,SIGNAL(clicked()),this,SLOT(onPlanWidgetBtnclicked()));
+	bool bResult = connect(ui.listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onPlanWidgetBtnclicked()));
+
+	connect(m_cTimer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
+
 	ui.listWidget->setSortingEnabled(true); // 自动排序
 
 	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺年计划 "));
 	this->setWindowIcon(QIcon("wheet.png"));
 
 	m_nClickTimes = 0;
-
-	m_cTimer = new QTimer(this);
 
 	LoadResource();
 }
@@ -42,10 +45,7 @@ YearPlanDialog::~YearPlanDialog()
 **-------------------------------------------------------------------*/
 bool YearPlanDialog::LoadResource()
 {
-	//QFile fileout("plan.txt");
-// 	QTextStream outStream(&fileout);
-// 
-// 	QString line = outStream.readLine();
+
 	QFile file("yearPlan.txt");
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
@@ -167,5 +167,30 @@ void YearPlanDialog::onPlanWidgetBtnclicked()
 {
 	m_nClickTimes += 1;
 
+	qDebug() << "PlanWidgetBtnclicked ...";
 	m_cTimer->start(200);
+}
+/*--------------------------------------------------------------------
+** 名称 : onTimeOut
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:定时器超时响应
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.03.30		Mark
+**-------------------------------------------------------------------*/
+void YearPlanDialog::onTimeOut()
+{
+	m_cTimer->stop();
+	if (1 == m_nClickTimes) {
+		qDebug() << "click event" << endl;
+		//TODO Click respond.
+	}
+	else if (2 == m_nClickTimes) {
+		qDebug() << "double click event" << endl;
+		//TODO Double click respond.
+	}
+	m_nClickTimes = 0;
 }
