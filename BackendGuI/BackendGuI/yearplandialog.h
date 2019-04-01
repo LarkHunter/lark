@@ -5,9 +5,18 @@
 #include "ui_yearplandialog.h"
 #include <QFile>
 #include <QTimer>
+#include <map>
+#include "DataOpration/DataOperation.h"
+#include "FileOpration/FileOpration.h"
 
-#include<set>
-
+/*---------------------------------------------------------------------------
+** 类名 : YearPlanDialog
+**---------------------------------------------------------------------------
+** 功能 : 年计划
+**---------------------------------------------------------------------------
+** Date			Name
+** 2019.04.01	Mark
+**---------------------------------------------------------------------------*/
 class YearPlanDialog : public QWidget
 {
 	Q_OBJECT
@@ -26,14 +35,18 @@ public:
 	// 新增计划
 	void onAddPlanBtnclicked();
 
-	// 点击计划
+	// 单击修改(进行中)
 	void onPlanWidgetBtnclicked();
+
+	// 双击右键删除
+	void onDoubleClickedDelete();
 
 	// 超时
 	void onTimeOut();
 public:
-	std::set<int> m_iSetItem;
+	//std::set<int> m_iSetItem;
 
+	MapItemPlan m_mapItemYearPlan;
 	QTimer *m_cTimer;
 
 private:

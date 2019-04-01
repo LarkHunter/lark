@@ -2,6 +2,7 @@
 #include<QDebug>
 #include <QMessageBox>
 
+#define D_YEAR_PLAN "yearPlan.txt"
 YearPlanDialog::YearPlanDialog(QWidget *parent)
 	: QWidget(parent)
 {
@@ -13,7 +14,9 @@ YearPlanDialog::YearPlanDialog(QWidget *parent)
 
 	connect(ui.addButton,SIGNAL(clicked()),this,SLOT(onAddPlanBtnclicked()));
 
-	bool bResult = connect(ui.listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onPlanWidgetBtnclicked()));
+	bool bResult = connect(ui.listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onDoubleClickedDelete()));
+
+	bResult = connect(ui.listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this, SLOT(onDoubleClickedDelete()));
 
 	connect(m_cTimer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
 
@@ -46,7 +49,7 @@ YearPlanDialog::~YearPlanDialog()
 bool YearPlanDialog::LoadResource()
 {
 
-	QFile file("yearPlan.txt");
+	QFile file(D_YEAR_PLAN);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		return false;
@@ -54,12 +57,21 @@ bool YearPlanDialog::LoadResource()
 
 	QTextStream in(&file);
 	in.setCodec("UTF-8");
+	
+	if(in.atEnd())
+	{
+		ui.listWidget->clear();
+		
+		m_mapItemYearPlan.clear();
+
+		return false;
+	}
+
 	while(!in.atEnd()) 
 	{
 		QString line = in.readLine();
 
 		InitListWidget(line);
-		//process_line(line);
 	}
 	return true;
 }
@@ -85,17 +97,19 @@ bool YearPlanDialog::InitListWidget(QString& qstrInfo)
 	QString qstrNumber = list[0]; 
 	QString qstrText = list[1]; 
 
-	int iNumber = qstrNumber.toInt();
-	std::set<int>::iterator itSet = m_iSetItem.find(iNumber);
-	if(itSet != m_iSetItem.end())
-	{
-		QString QsTitle = QString::fromLocal8Bit("重复");
-		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
-		QMessageBox::about(NULL, QsTitle, QsContent);
+	int iKey = qstrNumber.toInt();
 
-		return false;
-	}
-
+	m_mapItemYearPlan.insert(std::make_pair(iKey,qstrText));
+// 	bool bExist = DataOperation::isPlanExist(m_mapItemYearPlan, iKey);
+// 	if(bExist)
+// 	{
+// 		QString QsTitle = QString::fromLocal8Bit("重复");
+// 		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
+// 		QMessageBox::about(NULL, QsTitle, QsContent);
+// 
+// 		return false;
+// 	}
+	
 	ui.listWidget->insertItem(0, qstrInfo);
 
 	return true;
@@ -114,52 +128,28 @@ bool YearPlanDialog::InitListWidget(QString& qstrInfo)
 **-------------------------------------------------------------------*/
 void YearPlanDialog::onAddPlanBtnclicked()
 {
-	int inumber = ui.numEdit->text().toInt();
 	QString qsPlan = ui.planLineEdit->text();
 
-	// 验证当前序号是否存在
-	std::set<int>::iterator itSet = m_iSetItem.find(inumber);
-	if(itSet != m_iSetItem.end())
-	{
-		QString QsTitle = QString::fromLocal8Bit("重复");
-		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
-		QMessageBox::about(NULL, QsTitle, QsContent);
+	int iKey = DataOperation::QueryPlanKey(m_mapItemYearPlan);
 
-		return ;
+	bool bData = DataOperation::addPlan(m_mapItemYearPlan, iKey, qsPlan); // 保存到迭代器里面
+	if (!bData)
+	{
+		return;
 	}
 
 	QString qstrPlan;
-	qstrPlan = QString::number(inumber);
+	qstrPlan = QString::number(iKey);
 
 	qstrPlan.append(":");
 	qstrPlan.append(qsPlan);
 
 	qDebug() <<"qstrPlan"<< qstrPlan;
-	ui.listWidget->insertItem(0, qstrPlan);
 
-	m_iSetItem.insert(inumber); // 保存当前序号
-
-	QFile fileout("yearPlan.txt");
-
-	if(!fileout.open(QIODevice::Append | QIODevice::Text))
-	{
-		qDebug() << "Open failed";
-		return;
-	}	
+	ui.listWidget->insertItem(0, qstrPlan); // 显示到界面上
 	
-	qstrPlan.append("\n");
-	std::string strPlan = qstrPlan.toStdString();
-	const char* pszPlan = strPlan.c_str();
+	FileOpration::addPlanItem(D_YEAR_PLAN, qstrPlan); // 保存到文件里面
 
-	fileout.write(pszPlan);
-
-	
-	//ui.listWidget->scrollToBottom();
-	//ui.listWidget->insertItem(0, QString::fromLocal8Bit("2、今年小目标:再花他一个亿"));
-	//ui.listWidget->scrollToBottom();
-	
-
-	ui.numEdit->clear();
 	ui.planLineEdit->clear();
 }
 
@@ -170,6 +160,34 @@ void YearPlanDialog::onPlanWidgetBtnclicked()
 	qDebug() << "PlanWidgetBtnclicked ...";
 	m_cTimer->start(200);
 }
+
+/*--------------------------------------------------------------------
+** 名称 : onDoubleClickedDelete
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:删除计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.01		Mark
+**-------------------------------------------------------------------*/
+void YearPlanDialog::onDoubleClickedDelete()
+{
+	int iRow = ui.listWidget->currentRow();
+	int iKey = iRow + 1;
+
+	DataOperation::deletePlan(m_mapItemYearPlan,iKey); // 删除迭代器中的计划
+
+	FileOpration::UpdatePlanFile(D_YEAR_PLAN,m_mapItemYearPlan); // 更新文件中的计划
+
+	DataOperation::renewPlanItem(D_YEAR_PLAN, m_mapItemYearPlan); // 更新迭代器
+
+	LoadResource(); // 加载资源
+
+	qDebug() << "iRow = "<< iRow<< endl;
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : onTimeOut
 **--------------------------------------------------------------------

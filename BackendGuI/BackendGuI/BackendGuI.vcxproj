@@ -143,6 +143,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackendGuI.cpp" />
+    <ClCompile Include="DATAOPRATION\DataOperation.cpp" />
+    <ClCompile Include="FileOpration\FileOpration.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_BackendGuI.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -262,8 +264,10 @@
     <QtRcc Include="BackendGuI.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DATAOPRATION\DataOperation.h" />
     <ClInclude Include="Define\monthPlanDefine.h" />
     <ClInclude Include="Define\seasonPlanDefine.h" />
+    <ClInclude Include="FileOpration\FileOpration.h" />
     <ClInclude Include="GeneratedFiles\ui_BackendGuI.h" />
     <ClInclude Include="GeneratedFiles\ui_loginwarn.h" />
     <ClInclude Include="GeneratedFiles\ui_monthplan.h" />

@@ -41,6 +41,12 @@
     <Filter Include="Define">
       <UniqueIdentifier>{d6512586-68d5-439d-81f8-074667391d34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DataOperation">
+      <UniqueIdentifier>{e8e8e27f-73bf-486a-a34b-58bb75dde5ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileOpration">
+      <UniqueIdentifier>{79adce5e-cd82-4f49-9bee-496252992d54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -94,6 +100,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_monthplan.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="DATAOPRATION\DataOperation.cpp">
+      <Filter>DataOperation</Filter>
+    </ClCompile>
+    <ClCompile Include="FileOpration\FileOpration.cpp">
+      <Filter>FileOpration</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="BackendGuI.ui">
@@ -138,6 +150,12 @@
     </ClInclude>
     <ClInclude Include="Define\monthPlanDefine.h">
       <Filter>Define</Filter>
+    </ClInclude>
+    <ClInclude Include="DATAOPRATION\DataOperation.h">
+      <Filter>DataOperation</Filter>
+    </ClInclude>
+    <ClInclude Include="FileOpration\FileOpration.h">
+      <Filter>FileOpration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
