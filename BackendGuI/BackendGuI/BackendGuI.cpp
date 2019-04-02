@@ -20,7 +20,6 @@ BackendGuI::BackendGuI(QWidget *parent)
 
 	connect(ui.yearPlanBtn, SIGNAL(clicked()), this, SLOT(onYearPlanBtnclicked()));
 	connect(ui.seasonPlanBtn, SIGNAL(clicked()), this, SLOT(onSeasonPlanBtnclicked()));
-	connect(ui.seasonPlanBtn, SIGNAL(clicked()), this, SLOT(onSeasonPlanBtnclicked()));
 	connect(ui.monthPlanBtn, SIGNAL(clicked()), this, SLOT(onMonthPlanBtnclicked()));
 
 	connect(ui.resetBtn, SIGNAL(clicked()),this,SLOT(onResetBtnClicked()));
@@ -82,6 +81,9 @@ void BackendGuI::onAccountBtnclicked()
 		ui.yearPlanBtn->setEnabled(true);
 		ui.seasonPlanBtn->setEnabled(true);
 		ui.monthPlanBtn->setEnabled(true);
+
+		ui.confirmBtn->setEnabled(false);
+		ui.resetBtn->setEnabled(false);
 	}
 
 	ui.accountEdit->clear();

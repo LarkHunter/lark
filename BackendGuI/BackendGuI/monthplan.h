@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include "ui_monthplan.h"
-#include <set>
+#include "DataOpration/DataOperation.h"
+#include "FileOpration/FileOpration.h"
 
 class monthPlan : public QWidget
 {
@@ -54,18 +55,44 @@ public:
 	// 新增
 	void onAddBtnclicked();
 
+	// 删除
+	void onDoubleClickedDelete();
+
 public:
 	bool LoadResource(const char* pszPlancfg); // 加载资源
 
-	bool InitListWidget(QString& qstrInfo); // 初始化planlist
+	bool InitListWidget(QString& qstrInfo, MapItemPlan& mapItemPlan); // 初始化planlist
 
 	// 取得当前文件
 	const char* QuerySeasonPlanFile();
+
+	// 取得当前迭代器
+	void QueryQurrentMap(MapItemPlan& mapItemPlan);
+
+	// 保存到当前迭代器里面
+	void SaveMonthPlanMap(int iKey,QString & qstrPlan);
+
 private:
 	Ui::monthPlan ui;
 
 public:
-	std::set<int> m_iSetItem;
+
+	//MapItemPlan m_mapMonthPlan; //
+	MapItemPlan m_mapPlanJan; // 1月计划 
+	MapItemPlan m_mapPlanFeb; // 2月计划 
+	MapItemPlan m_mapPlanMar; // 3月计划 
+
+	MapItemPlan m_mapPlanApr; // 4月计划 
+	MapItemPlan m_mapPlanMay; // 5月计划 
+	MapItemPlan m_mapPlanJun; // 6月计划 
+
+	MapItemPlan m_mapPlanJul; // 7月计划 
+	MapItemPlan m_mapPlanAug; // 8月计划 
+	MapItemPlan m_mapPlanSep; // 9月计划 
+
+	MapItemPlan m_mapPlanOct; // 10月计划 
+	MapItemPlan m_mapPlanNov; // 11月计划 
+	MapItemPlan m_mapPlanDec; // 12月计划 
 private:
 	int m_iMonth;
 };

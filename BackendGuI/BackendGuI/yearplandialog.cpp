@@ -14,9 +14,9 @@ YearPlanDialog::YearPlanDialog(QWidget *parent)
 
 	connect(ui.addButton,SIGNAL(clicked()),this,SLOT(onAddPlanBtnclicked()));
 
-	bool bResult = connect(ui.listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onDoubleClickedDelete()));
+	connect(ui.listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onPlanWidgetBtnclicked()));
 
-	bResult = connect(ui.listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this, SLOT(onDoubleClickedDelete()));
+	connect(ui.listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this, SLOT(onDoubleClickedDelete()));
 
 	connect(m_cTimer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
 
@@ -58,14 +58,7 @@ bool YearPlanDialog::LoadResource()
 	QTextStream in(&file);
 	in.setCodec("UTF-8");
 	
-	if(in.atEnd())
-	{
-		ui.listWidget->clear();
-		
-		m_mapItemYearPlan.clear();
-
-		return false;
-	}
+	ui.listWidget->clear();
 
 	while(!in.atEnd()) 
 	{
@@ -100,16 +93,7 @@ bool YearPlanDialog::InitListWidget(QString& qstrInfo)
 	int iKey = qstrNumber.toInt();
 
 	m_mapItemYearPlan.insert(std::make_pair(iKey,qstrText));
-// 	bool bExist = DataOperation::isPlanExist(m_mapItemYearPlan, iKey);
-// 	if(bExist)
-// 	{
-// 		QString QsTitle = QString::fromLocal8Bit("重复");
-// 		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
-// 		QMessageBox::about(NULL, QsTitle, QsContent);
-// 
-// 		return false;
-// 	}
-	
+
 	ui.listWidget->insertItem(0, qstrInfo);
 
 	return true;
@@ -130,6 +114,10 @@ void YearPlanDialog::onAddPlanBtnclicked()
 {
 	QString qsPlan = ui.planLineEdit->text();
 
+	if(qsPlan.isEmpty())
+	{
+		return;
+	}
 	int iKey = DataOperation::QueryPlanKey(m_mapItemYearPlan);
 
 	bool bData = DataOperation::addPlan(m_mapItemYearPlan, iKey, qsPlan); // 保存到迭代器里面
@@ -158,7 +146,7 @@ void YearPlanDialog::onPlanWidgetBtnclicked()
 	m_nClickTimes += 1;
 
 	qDebug() << "PlanWidgetBtnclicked ...";
-	m_cTimer->start(200);
+	//m_cTimer->start(200);
 }
 
 /*--------------------------------------------------------------------
