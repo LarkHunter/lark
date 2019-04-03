@@ -2,8 +2,15 @@
 
 #include <QWidget>
 #include "ui_seasonPlan.h"
+#include "DataOpration/DataOperation.h"
+#include "FileOpration/FileOpration.h"
 
 #include <set>
+#include <map>
+
+typedef std::map<int, QString> MapPlanSeason; // 迭代器，保存的每月的计划
+
+typedef std::map<int, MapPlanSeason> MapSeasonSum;
 
 class seasonPlan : public QWidget
 {
@@ -35,10 +42,22 @@ public slots:
 	// 新增
 	void onAddBtnclicked();
 
+	// 删除
+	void onDeletePlan();
+public:
+	
+	// 取出当前key
+	int  QueryQurrentKey();
+
+	// 保存到迭代器里面
+	void SavePlanOnMap(int iKey,QString&qstrPlan);
+
 	// 取得当前文件
 	const char* QuerySeasonPlanFile();
 public:
 	std::set<int> m_iSetItem;
+
+	MapSeasonSum m_MapSeasonSum; // 季节总计划
 private:
 	int m_iSeason;
 private:

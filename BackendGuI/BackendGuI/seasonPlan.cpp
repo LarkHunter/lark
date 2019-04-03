@@ -17,6 +17,7 @@ seasonPlan::seasonPlan(QWidget *parent)
 	connect(ui.winterBtn, SIGNAL(clicked()), this, SLOT(onWinterBtnclicked()));
 
 	connect(ui.addBtn, SIGNAL(clicked()), this, SLOT(onAddBtnclicked()));
+	connect(ui.seasonlistWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(onDeletePlan()));
 
 	this->setWindowTitle(QString::fromLocal8Bit("神奇海螺季度计划 "));
 	this->setWindowIcon(QIcon("wheet.png"));
@@ -39,7 +40,7 @@ seasonPlan::~seasonPlan()
 ** 返值 : NULL
 **--------------------------------------------------------------------
 ** Date:		Name
-** 19.03.25		Mark
+** 19.04.03		Mark
 **-------------------------------------------------------------------*/
 bool seasonPlan::LoadResource(const char* pszPlancfg)
 {
@@ -49,7 +50,7 @@ bool seasonPlan::LoadResource(const char* pszPlancfg)
 	}
 
 	QFile file(pszPlancfg);
-	if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	if(!file.open(QIODevice::ReadWrite | QIODevice::Text))// ReadOnly
 	{
 		return false;
 	}
@@ -59,16 +60,25 @@ bool seasonPlan::LoadResource(const char* pszPlancfg)
 
 	QTextStream in(&file);
 	in.setCodec("UTF-8");
-	while (!in.atEnd())
+	while(!in.atEnd())
 	{
 		QString line = in.readLine();
 
 		InitListWidget(line);
-		//process_line(line);
 	}
 	return true;
 }
-
+/*--------------------------------------------------------------------
+** 名称 : 插入每一行
+**--------------------------------------------------------------------
+** 功能 : 加载资源
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.034.3		Mark
+**-------------------------------------------------------------------*/
 bool seasonPlan::InitListWidget(QString& qstrInfo)
 {
 	if(qstrInfo.isEmpty())
@@ -82,72 +92,121 @@ bool seasonPlan::InitListWidget(QString& qstrInfo)
 		return false;
 	}
 
-	QString qstrNumber = list[0];
 	QString qstrText = list[1];
+	int iKey = QueryQurrentKey(); // 查key
 
-	int iNumber = qstrNumber.toInt();
-	std::set<int>::iterator itSet = m_iSetItem.find(iNumber);
-	if (itSet != m_iSetItem.end())
+	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+	if(itSeasonSum == m_MapSeasonSum.end())
 	{
-		QString QsTitle = QString::fromLocal8Bit("重复");
-		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
-		QMessageBox::about(NULL, QsTitle, QsContent);
+		MapItemPlan mapItemPlan;
+		mapItemPlan.insert(std::make_pair(iKey, qstrText));
 
-		return false;
+		m_MapSeasonSum.insert(std::make_pair(m_iSeason, mapItemPlan));
+	}
+	else
+	{
+		itSeasonSum->second.insert(std::make_pair(iKey, qstrText));
 	}
 
-	ui.seasonlistWidget->insertItem(iNumber, qstrInfo);
+	ui.seasonlistWidget->insertItem(iKey, qstrInfo);
 
 	return true;
 }
-
+/*--------------------------------------------------------------------
+** 名称 : onSpringBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:春季计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 void seasonPlan::onSpringBtnclicked()
 {
+	m_iSeason = E_SEASON_TYPE_SPRING;
+
 	LoadResource(D_SEASON_SPRING_PLAN_CONFIG);
 
-	m_iSeason = E_SEASON_TYPE_SPRING;
 }
-
+/*--------------------------------------------------------------------
+** 名称 : onSummerBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:夏季计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 void seasonPlan::onSummerBtnclicked()
 {
+	m_iSeason = E_SEASON_TYPE_SUMMER;
+
 	LoadResource(D_SEASON_SUMMER_PLAN_CONFIG);
 
-	m_iSeason = E_SEASON_TYPE_SUMMER;
 }
-
+/*--------------------------------------------------------------------
+** 名称 : onAutumnBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:秋季计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 void seasonPlan::onAutumnBtnclicked()
 {	
-	LoadResource(D_SEASON_AUTUMN_PLAN_CONFIG);
-
 	m_iSeason = E_SEASON_TYPE_AUTUMN;
 
-}
+	LoadResource(D_SEASON_AUTUMN_PLAN_CONFIG);
 
+}
+/*--------------------------------------------------------------------
+** 名称 : onWinterBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:冬季计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 void seasonPlan::onWinterBtnclicked()
 {
-	LoadResource(D_SEASON_WINTER_PLAN_CONFIG);
-
 	m_iSeason = E_SEASON_TYPE_WINTER;
 
-}
+	LoadResource(D_SEASON_WINTER_PLAN_CONFIG);
 
+}
+/*--------------------------------------------------------------------
+** 名称 : onAddBtnclicked
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:新增计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 void seasonPlan::onAddBtnclicked()
 {
-	int inumber = ui.numEdit->text().toInt();
+	//int inumber = ui.numEdit->text().toInt();
 	QString qsPlan = ui.planLineEdit->text();
 
-	// 验证当前序号是否存在
-	std::set<int>::iterator itSet = m_iSetItem.find(inumber);
-	if (itSet != m_iSetItem.end())
-	{
-		QString QsTitle = QString::fromLocal8Bit("重复");
-		QString QsContent = QString::fromLocal8Bit("当前序号的计划已经存在");
-		QMessageBox::about(NULL, QsTitle, QsContent);
+	MapItemPlan mapMonthPlan;
 
-		return;
-	}
+	int iKey = QueryQurrentKey(); // 查key
+	SavePlanOnMap(iKey,qsPlan); // 保存到迭代器里
+
 	QString qstrPlan;
-	qstrPlan = QString::number(inumber);
+	qstrPlan = QString::number(iKey);
 
 	qstrPlan.append(":");
 	qstrPlan.append(qsPlan);
@@ -155,32 +214,146 @@ void seasonPlan::onAddBtnclicked()
 	qDebug() << "qstrPlan" << qstrPlan;
 	ui.seasonlistWidget->insertItem(0, qstrPlan);
 
-	m_iSetItem.insert(inumber); // 保存当前序号
-
 	const char* pszFile = QuerySeasonPlanFile();
 	if(!pszFile)
 	{
 		return;
 	}
 
-	QFile fileout(pszFile);
+	FileOpration::addPlanItem(pszFile, qstrPlan); // 保存到文件里面
 
-	if (!fileout.open(QIODevice::Append | QIODevice::Text))
+	ui.planLineEdit->clear();
+}
+/*--------------------------------------------------------------------
+** 名称 : onDeletePlan
+**--------------------------------------------------------------------
+** 功能 : 事件响应槽函数:删除计划
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
+void seasonPlan::onDeletePlan()
+{
+	int iRow = ui.seasonlistWidget->currentRow();
+	int iKey = iRow + 1;
+
+	const char* pszFile = QuerySeasonPlanFile();
+	if(!pszFile)
 	{
-		qDebug() << "Open failed";
+		return;
+	}
+	
+	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+	if(itSeasonSum == m_MapSeasonSum.end())
+	{
 		return;
 	}
 
-	qstrPlan.append("\n");
-	std::string strPlan = qstrPlan.toStdString();
-	const char* pszPlan = strPlan.c_str();
+	bool bResult = DataOperation::deletePlan(itSeasonSum->second, iKey); // 删除迭代器中的计划
+	if(!bResult)
+	{
+		return;
+	}
 
-	fileout.write(pszPlan);
+	FileOpration::UpdatePlanFile(pszFile, itSeasonSum->second); // 更新文件中的计划
 
-	ui.numEdit->clear();
-	ui.planLineEdit->clear();
+	DataOperation::renewPlanItem(pszFile, itSeasonSum->second); // 更新迭代器
+
+	LoadResource(pszFile);
 }
 
+/*--------------------------------------------------------------------
+** 名称 : QueryQurrentKey
+**--------------------------------------------------------------------
+** 功能 :取出当前key
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
+int seasonPlan::QueryQurrentKey()
+{
+	/*
+	MapPlanSeason mapPlanSeason;
+	switch(m_iSeason)
+	{
+		case E_SEASON_TYPE_SPRING:
+			{
+				MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+			}
+			break;
+		case E_SEASON_TYPE_SUMMER:
+			{
+			}
+			break;
+		case E_SEASON_TYPE_AUTUMN:
+			{
+			}
+			break;
+		case E_SEASON_TYPE_WINTER:
+			{
+			}
+			break;
+		default:
+			break;
+	}
+	*/
+	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+	if(itSeasonSum == m_MapSeasonSum.end())
+	{
+		return 1;
+	}
+
+	MapItemPlan mapPlanSeason = itSeasonSum->second;
+	int iKey = DataOperation::QueryPlanKey(mapPlanSeason);
+
+	return iKey;
+	
+}
+/*--------------------------------------------------------------------
+** 名称 : SavePlanOnMap
+**--------------------------------------------------------------------
+** 功能 : 将计划保存到迭代器里
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
+void seasonPlan::SavePlanOnMap(int iKey, QString&qstrPlan)
+{
+	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+	if (itSeasonSum == m_MapSeasonSum.end())
+	{
+		MapPlanSeason mapPlanSeason;
+
+		mapPlanSeason.insert(std::make_pair(iKey,qstrPlan));
+		m_MapSeasonSum.insert(std::make_pair(m_iSeason, mapPlanSeason));
+	}
+	else
+	{
+		DataOperation::addPlan(itSeasonSum->second, iKey, qstrPlan); // 
+	}
+
+}
+
+/*--------------------------------------------------------------------
+** 名称 : QuerySeasonPlanFile
+**--------------------------------------------------------------------
+** 功能 : 获取季节文件
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
 const char* seasonPlan::QuerySeasonPlanFile()
 {
 	const char* pszFile = D_SEASON_SPRING_PLAN_CONFIG;

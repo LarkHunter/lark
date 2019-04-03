@@ -59,8 +59,14 @@ public:
 	void onDoubleClickedDelete();
 
 public:
+
+	// 加载资源
 	bool LoadResource(const char* pszPlancfg); // 加载资源
 
+	// 初始化加载
+	bool InitLoad(QFile& qPlanfile,MapItemPlan& mapMonthPlan);
+
+	// 初始化计划列表
 	bool InitListWidget(QString& qstrInfo, MapItemPlan& mapItemPlan); // 初始化planlist
 
 	// 取得当前文件
@@ -72,6 +78,8 @@ public:
 	// 保存到当前迭代器里面
 	void SaveMonthPlanMap(int iKey,QString & qstrPlan);
 
+	// 删除当前迭代器中的计划
+	void DeletePlanMap(int iKey);
 private:
 	Ui::monthPlan ui;
 
