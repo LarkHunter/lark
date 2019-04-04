@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
@@ -29,7 +30,8 @@ public:
     QPushButton *autumnBtn;
     QPushButton *winterBtn;
     QListWidget *seasonlistWidget;
-    QLineEdit *numEdit;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout;
     QLineEdit *planLineEdit;
     QPushButton *addBtn;
 
@@ -55,15 +57,28 @@ public:
         seasonlistWidget = new QListWidget(seasonPlan);
         seasonlistWidget->setObjectName(QStringLiteral("seasonlistWidget"));
         seasonlistWidget->setGeometry(QRect(10, 10, 421, 261));
-        numEdit = new QLineEdit(seasonPlan);
-        numEdit->setObjectName(QStringLiteral("numEdit"));
-        numEdit->setGeometry(QRect(22, 350, 101, 20));
-        planLineEdit = new QLineEdit(seasonPlan);
+        widget = new QWidget(seasonPlan);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(11, 340, 494, 33));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        planLineEdit = new QLineEdit(widget);
         planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
-        planLineEdit->setGeometry(QRect(152, 350, 271, 20));
-        addBtn = new QPushButton(seasonPlan);
+        planLineEdit->setMinimumSize(QSize(411, 31));
+        planLineEdit->setMaximumSize(QSize(411, 31));
+
+        horizontalLayout->addWidget(planLineEdit);
+
+        addBtn = new QPushButton(widget);
         addBtn->setObjectName(QStringLiteral("addBtn"));
-        addBtn->setGeometry(QRect(450, 350, 75, 23));
+        addBtn->setMinimumSize(QSize(75, 31));
+        addBtn->setMaximumSize(QSize(75, 31));
+
+        horizontalLayout->addWidget(addBtn);
+
 
         retranslateUi(seasonPlan);
 

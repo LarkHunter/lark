@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_seasonPlan_t {
-    QByteArrayData data[9];
-    char stringdata0[136];
+    QByteArrayData data[8];
+    char stringdata0[117];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,14 +36,13 @@ QT_MOC_LITERAL(3, 31, 18), // "onSummerBtnclicked"
 QT_MOC_LITERAL(4, 50, 18), // "onAutumnBtnclicked"
 QT_MOC_LITERAL(5, 69, 18), // "onWinterBtnclicked"
 QT_MOC_LITERAL(6, 88, 15), // "onAddBtnclicked"
-QT_MOC_LITERAL(7, 104, 19), // "QuerySeasonPlanFile"
-QT_MOC_LITERAL(8, 124, 11) // "const char*"
+QT_MOC_LITERAL(7, 104, 12) // "onDeletePlan"
 
     },
     "seasonPlan\0onSpringBtnclicked\0\0"
     "onSummerBtnclicked\0onAutumnBtnclicked\0"
     "onWinterBtnclicked\0onAddBtnclicked\0"
-    "QuerySeasonPlanFile\0const char*"
+    "onDeletePlan"
 };
 #undef QT_MOC_LITERAL
 
@@ -74,7 +73,7 @@ static const uint qt_meta_data_seasonPlan[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    0x80000000 | 8,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -90,11 +89,11 @@ void seasonPlan::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->onAutumnBtnclicked(); break;
         case 3: _t->onWinterBtnclicked(); break;
         case 4: _t->onAddBtnclicked(); break;
-        case 5: { const char* _r = _t->QuerySeasonPlanFile();
-            if (_a[0]) *reinterpret_cast< const char**>(_a[0]) = _r; }  break;
+        case 5: _t->onDeletePlan(); break;
         default: ;
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject seasonPlan::staticMetaObject = {

@@ -25,49 +25,29 @@
   <property name="windowTitle">
    <string>YearPlanDialog</string>
   </property>
-  <widget class="QLineEdit" name="planLineEdit">
+  <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>192</x>
-     <y>501</y>
-     <width>361</width>
-     <height>20</height>
+     <x>610</x>
+     <y>470</y>
+     <width>75</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>361</width>
-     <height>20</height>
+     <width>75</width>
+     <height>31</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>361</width>
-     <height>20</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="addButton">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>500</y>
      <width>75</width>
-     <height>23</height>
-    </rect>
+     <height>31</height>
+    </size>
    </property>
    <property name="text">
     <string>新增计划</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="numEdit">
-   <property name="geometry">
-    <rect>
-     <x>81</x>
-     <y>501</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
    </property>
   </widget>
   <widget class="QListWidget" name="listWidget">
@@ -79,6 +59,34 @@
      <height>321</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>470</y>
+     <width>553</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLineEdit" name="planLineEdit">
+      <property name="minimumSize">
+       <size>
+        <width>470</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>470</width>
+        <height>31</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

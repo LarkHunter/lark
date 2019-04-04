@@ -27,7 +27,7 @@ class Ui_monthPlan
 {
 public:
     QListWidget *monthListWidget;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QPushButton *JanBtn;
     QPushButton *MarBtn;
@@ -35,7 +35,7 @@ public:
     QPushButton *JulBtn;
     QPushButton *SepBtn;
     QPushButton *NovBtn;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_2;
     QPushButton *FebBtn;
     QPushButton *AprBtn;
@@ -43,9 +43,8 @@ public:
     QPushButton *AugBtn;
     QPushButton *OctBtn;
     QPushButton *DecBtn;
-    QWidget *widget2;
+    QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout;
-    QLineEdit *numEdit;
     QLineEdit *planLineEdit;
     QPushButton *addBtn;
 
@@ -59,102 +58,101 @@ public:
         monthListWidget = new QListWidget(monthPlan);
         monthListWidget->setObjectName(QStringLiteral("monthListWidget"));
         monthListWidget->setGeometry(QRect(40, 30, 351, 271));
-        widget = new QWidget(monthPlan);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(430, 50, 77, 170));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(monthPlan);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(430, 50, 77, 170));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        JanBtn = new QPushButton(widget);
+        JanBtn = new QPushButton(layoutWidget);
         JanBtn->setObjectName(QStringLiteral("JanBtn"));
 
         verticalLayout->addWidget(JanBtn);
 
-        MarBtn = new QPushButton(widget);
+        MarBtn = new QPushButton(layoutWidget);
         MarBtn->setObjectName(QStringLiteral("MarBtn"));
 
         verticalLayout->addWidget(MarBtn);
 
-        MayBtn = new QPushButton(widget);
+        MayBtn = new QPushButton(layoutWidget);
         MayBtn->setObjectName(QStringLiteral("MayBtn"));
 
         verticalLayout->addWidget(MayBtn);
 
-        JulBtn = new QPushButton(widget);
+        JulBtn = new QPushButton(layoutWidget);
         JulBtn->setObjectName(QStringLiteral("JulBtn"));
 
         verticalLayout->addWidget(JulBtn);
 
-        SepBtn = new QPushButton(widget);
+        SepBtn = new QPushButton(layoutWidget);
         SepBtn->setObjectName(QStringLiteral("SepBtn"));
 
         verticalLayout->addWidget(SepBtn);
 
-        NovBtn = new QPushButton(widget);
+        NovBtn = new QPushButton(layoutWidget);
         NovBtn->setObjectName(QStringLiteral("NovBtn"));
 
         verticalLayout->addWidget(NovBtn);
 
-        widget1 = new QWidget(monthPlan);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(530, 50, 77, 170));
-        verticalLayout_2 = new QVBoxLayout(widget1);
+        layoutWidget1 = new QWidget(monthPlan);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(530, 50, 77, 170));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        FebBtn = new QPushButton(widget1);
+        FebBtn = new QPushButton(layoutWidget1);
         FebBtn->setObjectName(QStringLiteral("FebBtn"));
 
         verticalLayout_2->addWidget(FebBtn);
 
-        AprBtn = new QPushButton(widget1);
+        AprBtn = new QPushButton(layoutWidget1);
         AprBtn->setObjectName(QStringLiteral("AprBtn"));
 
         verticalLayout_2->addWidget(AprBtn);
 
-        JunBtn = new QPushButton(widget1);
+        JunBtn = new QPushButton(layoutWidget1);
         JunBtn->setObjectName(QStringLiteral("JunBtn"));
 
         verticalLayout_2->addWidget(JunBtn);
 
-        AugBtn = new QPushButton(widget1);
+        AugBtn = new QPushButton(layoutWidget1);
         AugBtn->setObjectName(QStringLiteral("AugBtn"));
 
         verticalLayout_2->addWidget(AugBtn);
 
-        OctBtn = new QPushButton(widget1);
+        OctBtn = new QPushButton(layoutWidget1);
         OctBtn->setObjectName(QStringLiteral("OctBtn"));
 
         verticalLayout_2->addWidget(OctBtn);
 
-        DecBtn = new QPushButton(widget1);
+        DecBtn = new QPushButton(layoutWidget1);
         DecBtn->setObjectName(QStringLiteral("DecBtn"));
 
         verticalLayout_2->addWidget(DecBtn);
 
-        widget2 = new QWidget(monthPlan);
-        widget2->setObjectName(QStringLiteral("widget2"));
-        widget2->setGeometry(QRect(50, 400, 355, 25));
-        horizontalLayout = new QHBoxLayout(widget2);
+        layoutWidget2 = new QWidget(monthPlan);
+        layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
+        layoutWidget2->setGeometry(QRect(50, 400, 355, 33));
+        horizontalLayout = new QHBoxLayout(layoutWidget2);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        numEdit = new QLineEdit(widget2);
-        numEdit->setObjectName(QStringLiteral("numEdit"));
-
-        horizontalLayout->addWidget(numEdit);
-
-        planLineEdit = new QLineEdit(widget2);
+        planLineEdit = new QLineEdit(layoutWidget2);
         planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
+        planLineEdit->setMinimumSize(QSize(0, 31));
+        planLineEdit->setMaximumSize(QSize(16777215, 31));
 
         horizontalLayout->addWidget(planLineEdit);
 
-        addBtn = new QPushButton(widget2);
+        addBtn = new QPushButton(layoutWidget2);
         addBtn->setObjectName(QStringLiteral("addBtn"));
+        addBtn->setMinimumSize(QSize(0, 31));
+        addBtn->setMaximumSize(QSize(16777215, 31));
 
         horizontalLayout->addWidget(addBtn);
 

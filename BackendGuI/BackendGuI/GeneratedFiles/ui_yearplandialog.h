@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
@@ -24,10 +25,11 @@ QT_BEGIN_NAMESPACE
 class Ui_YearPlanDialog
 {
 public:
-    QLineEdit *planLineEdit;
     QPushButton *addButton;
-    QLineEdit *numEdit;
     QListWidget *listWidget;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *planLineEdit;
 
     void setupUi(QWidget *YearPlanDialog)
     {
@@ -36,20 +38,29 @@ public:
         YearPlanDialog->resize(757, 581);
         YearPlanDialog->setMinimumSize(QSize(757, 581));
         YearPlanDialog->setMaximumSize(QSize(757, 581));
-        planLineEdit = new QLineEdit(YearPlanDialog);
-        planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
-        planLineEdit->setGeometry(QRect(192, 501, 361, 20));
-        planLineEdit->setMinimumSize(QSize(361, 20));
-        planLineEdit->setMaximumSize(QSize(361, 20));
         addButton = new QPushButton(YearPlanDialog);
         addButton->setObjectName(QStringLiteral("addButton"));
-        addButton->setGeometry(QRect(590, 500, 75, 23));
-        numEdit = new QLineEdit(YearPlanDialog);
-        numEdit->setObjectName(QStringLiteral("numEdit"));
-        numEdit->setGeometry(QRect(81, 501, 81, 20));
+        addButton->setGeometry(QRect(610, 470, 75, 31));
+        addButton->setMinimumSize(QSize(75, 31));
+        addButton->setMaximumSize(QSize(75, 31));
         listWidget = new QListWidget(YearPlanDialog);
         listWidget->setObjectName(QStringLiteral("listWidget"));
         listWidget->setGeometry(QRect(80, 40, 631, 321));
+        widget = new QWidget(YearPlanDialog);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(80, 470, 553, 33));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        planLineEdit = new QLineEdit(widget);
+        planLineEdit->setObjectName(QStringLiteral("planLineEdit"));
+        planLineEdit->setMinimumSize(QSize(470, 31));
+        planLineEdit->setMaximumSize(QSize(470, 31));
+
+        horizontalLayout->addWidget(planLineEdit);
+
 
         retranslateUi(YearPlanDialog);
 
