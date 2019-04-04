@@ -21,9 +21,18 @@ public:
 	~seasonPlan();
 
 public:
-	bool LoadResource(const char* pszPlancfg); // 加载资源
 
+	// 把计划显示到List控件上
+	bool ShowListWidget(const char* pszPlancfg);
+
+	// 加载资源
+	bool LoadResource(const char* pszPlancfg); 
+
+	// 初始化计划
 	bool InitListWidget(QString& qstrInfo); // 初始化planlist
+
+	// 更新计划
+	bool UpdateListWidget(QString& qstrInfo);
 
 public slots:
 

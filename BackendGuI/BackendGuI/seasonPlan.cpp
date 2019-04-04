@@ -32,6 +32,45 @@ seasonPlan::~seasonPlan()
 {
 }
 /*--------------------------------------------------------------------
+** 名称 : ShowListWidget
+**--------------------------------------------------------------------
+** 功能 : 显示planlist
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.04.03		Mark
+**-------------------------------------------------------------------*/
+bool seasonPlan::ShowListWidget(const char* pszPlancfg)
+{
+	if(NULL == pszPlancfg)
+	{
+		return false;
+	}
+
+	QFile file(pszPlancfg);
+	if(!file.open(QIODevice::ReadWrite | QIODevice::Text))// ReadOnly
+	{
+		return false;
+	}
+
+	ui.seasonlistWidget->clear();
+	m_iSetItem.clear();
+
+	QTextStream in(&file);
+	in.setCodec("UTF-8");
+	while(!in.atEnd())
+	{
+		QString line = in.readLine();
+
+		UpdateListWidget(line);
+	}
+
+	return true;
+}
+
+/*--------------------------------------------------------------------
 ** 名称 : LoadResource
 **--------------------------------------------------------------------
 ** 功能 : 加载资源
@@ -96,22 +135,64 @@ bool seasonPlan::InitListWidget(QString& qstrInfo)
 	int iKey = QueryQurrentKey(); // 查key
 
 	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
-	if(itSeasonSum == m_MapSeasonSum.end())
+	if(itSeasonSum != m_MapSeasonSum.end())
 	{
-		MapItemPlan mapItemPlan;
-		mapItemPlan.insert(std::make_pair(iKey, qstrText));
-
-		m_MapSeasonSum.insert(std::make_pair(m_iSeason, mapItemPlan));
+		itSeasonSum->second.insert(std::make_pair(iKey, qstrText));
 	}
 	else
 	{
-		itSeasonSum->second.insert(std::make_pair(iKey, qstrText));
+		MapItemPlan mapItemPlan;
+		mapItemPlan.insert(std::make_pair(iKey, qstrText));
+		m_MapSeasonSum.insert(std::make_pair(m_iSeason, mapItemPlan));
 	}
 
 	ui.seasonlistWidget->insertItem(iKey, qstrInfo);
 
 	return true;
 }
+/*--------------------------------------------------------------------
+** 名称 : 更新每一行
+**--------------------------------------------------------------------
+** 功能 : UpdateListWidget
+**--------------------------------------------------------------------
+** 参数 : NULL
+** 返值 : NULL
+**--------------------------------------------------------------------
+** Date:		Name
+** 19.034.3		Mark
+**-------------------------------------------------------------------*/
+bool seasonPlan::UpdateListWidget(QString& qstrInfo)
+{
+	if (qstrInfo.isEmpty())
+	{
+		return false;
+	}
+
+	QStringList list = qstrInfo.split(":");
+	if (list.empty())
+	{
+		return false;
+	}
+
+	QString qstrText = list[1];
+	int iKey = QueryQurrentKey(); // 查key
+
+	MapSeasonSum::iterator itSeasonSum = m_MapSeasonSum.find(m_iSeason);
+
+	if (itSeasonSum == m_MapSeasonSum.end())
+	{
+
+		MapItemPlan mapItemPlan;
+		mapItemPlan.insert(std::make_pair(iKey, qstrText));
+		m_MapSeasonSum.insert(std::make_pair(m_iSeason, mapItemPlan));
+
+	}
+
+	ui.seasonlistWidget->insertItem(iKey, qstrInfo);
+
+	return true;
+}
+
 /*--------------------------------------------------------------------
 ** 名称 : onSpringBtnclicked
 **--------------------------------------------------------------------
@@ -200,6 +281,11 @@ void seasonPlan::onAddBtnclicked()
 	//int inumber = ui.numEdit->text().toInt();
 	QString qsPlan = ui.planLineEdit->text();
 
+	if(qsPlan.isEmpty())
+	{
+		return;
+	}
+
 	MapItemPlan mapMonthPlan;
 
 	int iKey = QueryQurrentKey(); // 查key
@@ -262,7 +348,7 @@ void seasonPlan::onDeletePlan()
 
 	DataOperation::renewPlanItem(pszFile, itSeasonSum->second); // 更新迭代器
 
-	LoadResource(pszFile);
+	ShowListWidget(pszFile); // 控件上显示计划
 }
 
 /*--------------------------------------------------------------------

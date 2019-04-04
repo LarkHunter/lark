@@ -205,7 +205,7 @@ public:
         label_2->setText(QApplication::translate("BackendGuIClass", "\345\257\206\347\240\201", Q_NULLPTR));
         confirmBtn->setText(QApplication::translate("BackendGuIClass", "\347\241\256\345\256\232", Q_NULLPTR));
         resetBtn->setText(QApplication::translate("BackendGuIClass", "\351\207\215\347\275\256", Q_NULLPTR));
-        menu->setTitle(QApplication::translate("BackendGuIClass", "\350\256\241\345\210\222\347\256\241\347\220\206\345\231\250 HL1.0", Q_NULLPTR));
+        menu->setTitle(QApplication::translate("BackendGuIClass", "\350\256\241\345\210\222\347\256\241\347\220\206\345\231\250 HL2.0", Q_NULLPTR));
         menuHL1_0->setTitle(QString());
         menu_2->setTitle(QString());
     } // retranslateUi
