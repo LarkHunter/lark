@@ -21,16 +21,13 @@
     <ClCompile Include="MySQlConn.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="note.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MySQlConn.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DatabaseDefine.h">
-      <Filter>头文件</Filter>
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MySQlConn.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

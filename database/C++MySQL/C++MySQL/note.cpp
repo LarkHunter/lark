@@ -1,4 +1,5 @@
 /*
+CH1、Simpleuse
 	1、mysql_init(&m_mysql); // Allocates or initializes a MYSQL object suitable for mysql_real_connect(). 
 
 	2、mysql_real_connect() attempts to establish a connection to a MySQL database engine running on host
@@ -27,4 +28,7 @@
 	}
 	printf("\n");
 	}
+
+2、SpecialUse
+
 */
