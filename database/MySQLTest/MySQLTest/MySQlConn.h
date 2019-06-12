@@ -1,7 +1,7 @@
 #pragma once
 #include "winsock.h" 
-#include "include/mysql.h" 
-#include "include/mysqld_error.h"
+#include "MySQL5.5/mysql.h" 
+#include "MySQL5.5/mysqld_error.h"
 
 #include <stdio.h>
 #include <iostream>
