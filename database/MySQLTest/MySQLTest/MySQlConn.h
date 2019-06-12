@@ -1,6 +1,8 @@
 #pragma once
 #include "winsock.h" 
 #include "include/mysql.h" 
+#include "include/mysqld_error.h"
+
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -12,8 +14,8 @@
 // 表字段
 struct STField
 {
-	std::string strSTFieldType;
-	std::string strSTFieldName;
+	std::string strSTFieldType; // 字段类型
+	std::string strSTFieldName; // 字段名称
 
 	STField() :strSTFieldType(""), strSTFieldName("")
 	{
@@ -33,14 +35,36 @@ typedef std::vector<std::string> VecDatabase;
 
 typedef std::vector<STField> VecField; // 字段
 
-typedef std::map<int, std::string > MapInfo; // 查询结果
+// 表字段值
+struct STFieldValue
+{
+	std::string strSTFieldName; // 字段名称
+	std::string strSTFieldValue; // 字段值
+
+	STFieldValue() : strSTFieldName(""),strSTFieldValue("")
+	{
+
+	}
+
+	bool Clear()
+	{
+		strSTFieldName.clear();
+		strSTFieldValue.clear();
+
+		return true;
+	};
+};
+
+typedef std::vector<STFieldValue> VecFieldValue; // 字段值
+
+typedef std::vector<std::string> VecResult; // 结果
 /*---------------------------------------------------------------------------
 ** 类名 : MySQlConn
 **---------------------------------------------------------------------------
 ** 功能 : MySQL数据库操作
 **---------------------------------------------------------------------------
 ** Date			Name
-** 19.04.10		任伟
+** 19.04.10		Mark
 **---------------------------------------------------------------------------*/
 class MySQlConn
 {
@@ -70,21 +94,26 @@ public:
 	// 使用数据表
 	bool SelectTable(const char* pszTable);
 
-	// 增
-	bool setString(const char* pszItem);
+	// 新增某个区域数据
+	bool insertString(const char*pszField,const char* pszItem);
 
-	// 删除
-	bool deleteValue(int iID);
+	// 增加一条数据
+	bool insertValue(VecFieldValue& vecField);
 
-	// 改
-	bool modifyValue(int iID, const char*pszValue);
+	// 删除一条数据
+	bool deleteValue(const char*KeyID, int iID);
 
-	//查
-	//bool queryValue(int iID,std::string& strValue);
+	// 修改一条数据
+	bool modifyValue(const char*KeyFieldname, int iID, const char* pszObjFieldName,const char*pszValue);
 
-	// 查询全部信息
-	//bool queryAllValue(MapInfo & mapInfo);
+	// 查询某字段数据
+	bool queryValue(const char*KeyFieldname, int iID, const char* pszObjFieldName, std::string &strResult);
 
+	// 查询一条数据
+	bool queryAllValueByID(const char*KeyFieldname, int iID, VecResult& vecResult);
+
+	// 查询全部数据
+	bool queryAllValue(VecResult& vecResult);
 public:
 
 	MYSQL *m_mysql; // 数据库对象

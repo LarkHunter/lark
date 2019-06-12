@@ -79,7 +79,7 @@ bool MySQlConn::ShowDatabase(VecDatabase& vecDatabase)
 	return true;
 	
 }
-
+// 创建表
 bool MySQlConn::CreateTable(const char* pszTable, VecField& vecField)
 {
 	if(!pszTable)
@@ -156,7 +156,9 @@ bool MySQlConn::SelectTable(const char* pszTable)
 	return true;
 }
 
-bool MySQlConn::setString(const char* pszItem)
+// 新增值 
+// Mark 2019-06-11
+bool MySQlConn::insertString(const char*pszField,const char* pszItem)
 {
 	if(!pszItem)
 	{
@@ -166,7 +168,11 @@ bool MySQlConn::setString(const char* pszItem)
 	std::string strAddSql("insert"); //insert LocalTable(info) VALUES("Brazil")
 	strAddSql.append(" ");
 	strAddSql.append(m_pszTable);
-	strAddSql.append("(info) VALUES('");
+	strAddSql.append(" (");
+	strAddSql.append(pszField);
+	strAddSql.append(" )");
+//	strAddSql.append("(info) VALUES('");
+	strAddSql.append(" values('");
 	strAddSql.append(pszItem);
 	strAddSql.append("')");
 
@@ -177,10 +183,59 @@ bool MySQlConn::setString(const char* pszItem)
 	{
 		return false;
 	}
+
+	return true;
+}
+// add value 
+// Mark 2019-06-11
+bool MySQlConn::insertValue(VecFieldValue& vecField)
+{
+	VecFieldValue::iterator itInsert = vecField.begin();
+	if(itInsert == vecField.end())
+	{
+		return false;
+	}
+
+	std::string strFields("(");
+	std::string strValues("(");
+
+	std::string strInsertSQL("insert ");
+	strInsertSQL.append(" ");
+	strInsertSQL.append(m_pszTable);
+	for(;itInsert!=vecField.end();itInsert++)
+	{
+		strFields.append(itInsert->strSTFieldName);
+		strFields.append(",");
+
+		strValues.append("'");
+		strValues.append(itInsert->strSTFieldValue);
+		strValues.append("'");
+		strValues.append(",");
+	}
+	
+	strFields.pop_back();
+	strFields.append(")");
+
+	strValues.pop_back();
+	strValues.append(")");
+
+	strInsertSQL.append(strFields);
+	strInsertSQL.append("values");
+	strInsertSQL.append(strValues);
+
+	const char*pszInsertValue = strInsertSQL.c_str();
+	int iRet = mysql_query(m_mysql, pszInsertValue); // Zero for success. Nonzero if an error occurred.
+	if(iRet)
+	{
+		return false;
+	}
+
 	return true;
 }
 
-bool MySQlConn::deleteValue(int iID)
+// delete value
+//Mark 2019 - 06 - 11
+bool MySQlConn::deleteValue(const char* pszKeyID,int iID)
 {
 	if(iID <0)
 	{
@@ -191,7 +246,11 @@ bool MySQlConn::deleteValue(int iID)
 	strDeleteSql.append(" ");
 	strDeleteSql.append(m_pszTable);
 	strDeleteSql.append(" ");
-	strDeleteSql.append("where id = ");
+	strDeleteSql.append("where");
+	strDeleteSql.append(" ");
+	strDeleteSql.append(pszKeyID);
+	strDeleteSql.append("=");
+
 	strDeleteSql.append(std::to_string(iID));
 
 	const char* pszDeleteSql = strDeleteSql.c_str();
@@ -204,8 +263,9 @@ bool MySQlConn::deleteValue(int iID)
 
 	return true;
 }
-
-bool MySQlConn::modifyValue(int iID, const char*pszValue)
+// modifyValue 
+//Mark 2019 - 06 - 11
+bool MySQlConn::modifyValue(const char*pszKeyID, int iID, const char* pszFieldName,const char*pszValue)
 {
 	if(iID<0)
 	{
@@ -222,9 +282,19 @@ bool MySQlConn::modifyValue(int iID, const char*pszValue)
 
 	strModifySQL.append(m_pszTable);
 	strModifySQL.append(" ");
-	strModifySQL.append("set info = '");
+	strModifySQL.append("set");
+	strModifySQL.append(" ");
+	strModifySQL.append(pszFieldName);
+	strModifySQL.append(" ");
+	strModifySQL.append("=");
+	strModifySQL.append(" '");
 	strModifySQL.append(pszValue);
-	strModifySQL.append("' where id = ");
+	strModifySQL.append(" '");
+	strModifySQL.append(" where");
+	strModifySQL.append(" ");
+	strModifySQL.append(" ");
+	strModifySQL.append(pszKeyID);
+	strModifySQL.append("=");
 	strModifySQL.append(std::to_string(iID));
 
 	const char* pszModifySQl = strModifySQL.c_str();
@@ -234,6 +304,183 @@ bool MySQlConn::modifyValue(int iID, const char*pszValue)
 	{
 		return false;
 	}
+
+	return true;
+}
+// modifyValue 
+//Mark 2019 - 06 - 11
+bool MySQlConn::queryValue(const char*KeyFieldname, int iID, const char* pszObjFieldName, std::string &strResult)
+{
+	if(iID < 0)
+	{
+		return false;
+	}
+
+// 	if(!pszValue)
+// 	{
+// 		return false;
+// 	}
+
+	std::string strQuerySQL("select");
+	strQuerySQL.append(" ");
+	strQuerySQL.append(pszObjFieldName);
+	strQuerySQL.append(" ");
+	strQuerySQL.append("from");
+	strQuerySQL.append(" ");
+	strQuerySQL.append(m_pszTable);
+	strQuerySQL.append(" ");
+	strQuerySQL.append("where ");
+	strQuerySQL.append(" ");
+	strQuerySQL.append(KeyFieldname);
+	strQuerySQL.append("=");
+	strQuerySQL.append(std::to_string(iID));
+
+	const char* pszQuerySQL = strQuerySQL.c_str();
+
+	//MYSQL_ROW row;
+// 	unsigned int num_fields;
+// 	unsigned int i;
+
+ 	int iRet = mysql_query(m_mysql, pszQuerySQL);// Zero for success. Nonzero if an error occurred.
+ 	if(iRet)
+ 	{
+ 		return false;
+ 	}
+
+	MYSQL_RES *result;
+	result = mysql_store_result(m_mysql); // NULL if the statement did not return a result set or an error occurred.
+	if(!result)
+	{
+		return false;
+	}
+
+	MYSQL_ROW row;
+	while(row = mysql_fetch_row(result))
+	{
+		int iFieldNum = mysql_num_fields(result);
+		for(int t = 0;t<iFieldNum;t++)
+		{
+			if(NULL == row[t])
+			{
+				strResult = "";
+			}
+			else
+			{
+				strResult = row[t];
+			}
+			
+			printf("%s  ", row[t]);
+		}
+	}
+
+	mysql_free_result(result);
+	return true;
+}
+
+// modifyValue 
+//Mark 2019-06-11
+bool MySQlConn::queryAllValueByID(const char*KeyFieldname, int iID, VecResult& vecResult)
+{
+	std::string strQueryAllSQL("select * from");
+	strQueryAllSQL.append(" ");
+	strQueryAllSQL.append(m_pszTable);
+	strQueryAllSQL.append(" ");
+	strQueryAllSQL.append(" where");
+	strQueryAllSQL.append(" ");
+	strQueryAllSQL.append(KeyFieldname);
+	strQueryAllSQL.append("=");
+	strQueryAllSQL.append(std::to_string(iID));
+
+	const char* pszQueryAllSQL = strQueryAllSQL.c_str();
+	int iRet = mysql_query(m_mysql, pszQueryAllSQL);// Zero for success. Nonzero if an error occurred.
+	if(iRet)
+	{
+		return false;
+	}
+
+	MYSQL_RES *result;
+	result = mysql_store_result(m_mysql); // NULL if the statement did not return a result set or an error occurred.
+	if(!result)
+	{
+		return false;
+	}
+
+	MYSQL_ROW row;
+	while (row = mysql_fetch_row(result))
+	{
+		int iFieldNum = mysql_num_fields(result);
+		for(int t = 0; t < iFieldNum; t++)
+		{
+			std::string strResult;
+			if(NULL == row[t])
+			{
+				strResult = "";
+			}
+			else
+			{
+				strResult = row[t];
+			}
+			
+			vecResult.push_back(strResult);
+
+			//printf("%s  ", row[t]);
+		}
+	}
+
+	mysql_free_result(result);
+	return true;
+}
+// modifyValue 
+//Mark 2019-06-11
+bool MySQlConn::queryAllValue(VecResult& vecResult)
+{
+	std::string strQueryAllSQL("select * from");
+	strQueryAllSQL.append(" ");
+	strQueryAllSQL.append(m_pszTable);
+// 	strQueryAllSQL.append(" ");
+// 	strQueryAllSQL.append(" where");
+// 	strQueryAllSQL.append(" ");
+// 	strQueryAllSQL.append(KeyFieldname);
+// 	strQueryAllSQL.append("=");
+// 	strQueryAllSQL.append(std::to_string(iID));
+
+	const char* pszQueryAllSQL = strQueryAllSQL.c_str();
+	int iRet = mysql_query(m_mysql, pszQueryAllSQL);// Zero for success. Nonzero if an error occurred.
+	if(iRet)
+	{
+		return false;
+	}
+
+	MYSQL_RES *result;
+	result = mysql_store_result(m_mysql); // NULL if the statement did not return a result set or an error occurred.
+	if(!result)
+	{
+		return false;
+	}
+
+	MYSQL_ROW row;
+	while(row = mysql_fetch_row(result))
+	{
+		int iFieldNum = mysql_num_fields(result);
+		for(int t = 0; t < iFieldNum; t++)
+		{
+			std::string strResult;
+			if(NULL == row[t])
+			{
+				strResult = "";
+			}
+			else
+			{
+				strResult = row[t];
+			}
+
+			vecResult.push_back(strResult);
+
+			printf("%s  ", row[t]);
+		}
+	}
+
+	mysql_free_result(result);
 
 	return true;
 }
