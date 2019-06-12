@@ -9,7 +9,11 @@
 #include <map>
 #include <vector>
 
+#ifdef _WIN64
 #pragma comment(lib,"libmySQL.lib") 
+#else
+#pragma comment(lib,"libmysql(32)/libmySQL.lib") 
+#endif
 
 // ±í×Ö¶Î
 struct STField
